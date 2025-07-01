@@ -63,7 +63,7 @@
       }
 
       .photoDiv {
-        width: 49%;
+        width: 100%;
         margin-right: 0px;
         margin-left: auto;
         display: block;
@@ -73,6 +73,14 @@
 
       /* When it's less than 700 pixels wide, do normal scrollytelling */
       @media only screen and (min-width: 700px) {
+
+        .photoDiv {
+          width: 49%;
+          margin-right: 0px;
+          margin-left: auto;
+          display: block;
+        }
+
         #scrolly.side-by-side {
           display: flex;
         }
