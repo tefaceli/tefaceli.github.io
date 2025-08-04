@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ecuadorians' deportations from the U.S.</title>
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://unpkg.com/scrollama"></script>
+
+    <script>
+      d3.csv("deport_data.csv")
+        .then(data => {
+            console.log(data)
+
+            const size = 10;
+            const spacing = 1;
+            const width = 640;
+            const total = size + spacing;
+            const columns = Math.floor(width / total);
+            const offsetX = (width - columns * total) / 2;
+            const rows = Math.ceil(data.length / columns);
+            const height = rows * total;
+
+            const myChart = d3
+                .select('#svg-chart') // select the div
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height)
+
+            // create SVG elements binded with data
+            const squares = myChart
+                .selectAll('rect')
+                .data(data)
+                .join('rect')
+                    .attr('x', (d, i) => offsetX + (i % columns) * total)
+                    .attr('y', (d, i) => Math.floor(i / columns) * total)
+                    .attr('width', size)
+                    .attr('height', size)
+                    .attr('fill', 'lightgrey'); 
+
+            function showCriminals() {
+                myChart.selectAll('rect')
+                    .transition()
+                    .duration(500)
+                    .attr('fill', d => {
+                    const status = d.case_criminality?.trim();
+                    if (status === '1 Convicted Criminal') return '#e63946';  
+                    if (status === '2 Pending Criminal Charges') return '#f1c40f';
+                    return 'lightgrey';  
+                    });
+                }
+
+            function showWomen() {
+                myChart.selectAll('rect')
+                    .transition()
+                    .duration(500)
+                    .attr('fill', d => {
+                    const status = d.gender?.trim();
+                    if (status === 'Female') return '#9d4edd';  
+                    return 'lightgrey';  
+                    });
+                }
+
+            function showAgeGroups() {
+                myChart.selectAll('rect')
+                    .transition()
+                    .duration(500)
+                    .attr('fill', d => {
+                    const status = d.age_group?.trim();
+                    if (status === '21-30') return '#264653';  
+                    if (status === '31-40') return '#48cae4';
+                    return 'lightgrey';  
+                    });
+                }
+
+            // Start scrollama
+            const scrolly = d3.select("#scroll-content");
+            const figure = scrolly.select("#svg-chart");
+            const step = scrolly.selectAll(".step"); 
+
+            // initialize the scrollama
+            const scroller = scrollama();
+
+            // generic window resize listener event
+            function handleResize() {
+
+                // 1. update height of step elements
+                var stepH = Math.floor(window.innerHeight * 0.75);
+                step.style("height", stepH + "px");
+
+                var figureHeight = Math.min(window.innerHeight*0.8,640);
+                var figureMarginTop = (window.innerHeight - figureHeight) / 2;
+
+                figure
+                    .style("height", figureHeight + "px")
+                    .style("top", figureMarginTop + "px");
+
+                // 3. tell scrollama to update new element dimensions
+                scroller.resize();
+            }
+
+            // scrollama event handlers
+            function handleStepEnter(response) {
+
+                // add color to current step only
+                step.classed("is-active", function (d, i) {
+                    return i === response.index;
+                });
+
+                // update graphic based on step
+                if (response.index == 0) {
+                    showCriminals()
+                } else if (response.index == 1) {
+                    showAgeGroups()
+                } else if (response.index == 2) {
+                    showWomen()
+                }
+            }
+
+            function init() {
+
+                // 1. force a resize on load to ensure proper dimensions are sent to scrollama
+                handleResize();
+
+                // 2. bind scrollama event handlers (this can be chained like below)
+
+                scroller
+                    .setup({
+                    step: "#scroll-content .step",
+                    offset: 0.33,
+                    debug: false
+                    })
+                    .onStepEnter(handleStepEnter);
+
+                // 3. watch for window resizing
+                window.addEventListener('resize', handleResize);
+            }
+
+            // kick things off
+            init();
+
+        })
+
+    </script>
+
+    <style>
+        body {
+            margin: 0;
+            font-size: 20px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            text-rendering: optimizeLegibility;
+        }
+
+        .content {
+            max-width: 640px;
+            margin: auto;
+        }
+
+        .header {
+            padding: 3em 0;
+        }
+
+        a {
+            color: #f05349;
+        }
+
+        .footer {
+            background: #f4f4f4;
+            text-align: center;
+            font-size: 0.8em;
+            margin-top: 4em;
+            padding: 4em 0;
+        }
+
+        figure {
+            margin: 0;
+            padding-bottom: 1.2em;
+        }
+
+        figcaption {
+            font-size: 0.8em;
+            text-align: center;
+            margin-top: 0.5em;
+            color: #666;
+        }
+
+        h1 {
+            font-family: 'Lora', Georgia, serif;
+            font-weight: bold;
+            font-size: 3em;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-family: 'Lora', Georgia, serif;
+            font-weight: bold;
+            font-size: 1.5em;
+            line-height: 1.1;
+        }
+
+        .subhead {
+            font-family: 'Lora', Georgia, serif;
+        }
+
+        iframe,
+        img,
+        video {
+            max-width: 100%;
+        }
+
+        p {
+            line-height: 1.6;
+            margin: 0;
+            padding-bottom: 1.2em;
+        }
+
+        ul {
+            margin: 0;
+            padding-bottom: 1em;
+            line-height: 1.6;
+        }
+
+        iframe {
+            padding-bottom: 1.2em;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            background: #fffbaf;
+            font-size: 0.85em;
+        }
+
+        .full-width figure {
+            text-align: center;
+        }
+
+        /* margin on mobile */
+        @media (max-width: 640px) {
+            body {
+                font-size: 16px;
+            }
+
+            .content {
+                padding-left: 0.5em;
+                padding-right: 0.5em;
+            }
+        }
+
+        /*scrollama related styles*/
+        #scroll-content {
+            position: relative;
+            padding: 1rem;
+        }
+
+        #scroll-content #text {
+            position: relative;
+            padding: 0;
+            max-width: 20rem;
+            margin: 0 auto;
+        }
+
+        #scroll-content #svg-chart {
+            position: -webkit-sticky;
+            position: sticky;
+            left: 0;
+            width: 100%;
+            margin: 0;
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            background-color:#f9f9f9;
+            z-index: 0;
+        }
+
+        #scroll-content .step {
+            margin: 0 auto 1rem auto;
+            margin-bottom: 30rem;
+            padding: 0.5rem 1rem;
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: black;
+            width: fit-content;
+            max-width: 100%;
+            height: auto !important;
+            min-height: 100px;
+            max-height: auto;
+            text-align: center;
+            justify-content: center;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <div class="header">
+            <h1>3.768 Ecuadorians deported from the US since Trump took office</h1>
+            <p class="subhead">bla bla bla bla.</p>
+        </div>
+
+        <div class="byline">
+            <p>By <a href="https://twitter.com/EstefaniaCeliR", target="_blank">Estefanía Celi</a></p>
+        </div>
+        
+        <p>Data from The Deportation Data Project.</p>
+        
+        <div id="scroll-content">  <!-- The overall container -->
+        <div id="svg-chart"></div> <!-- Your chart -->
+        <div id="text"> 
+            <div class="step">The majority of those being deported are not <span style="color: #e63946;"><strong>convicted criminals</strong></span> or <span style="color: #f1c40f;"><strong>pending criminal charges</strong></span>.</div>
+            <div class="step">Most of them are young adults, in the groups <span style="color: #264653;"><strong>from 21 to 30 years old</strong></span>, and <span style="color: #48cae4;"><strong>from 31 to 40 years old</strong></span>.</div>
+            <div class="step"><span style="color: #9d4edd;"><strong>Women</strong></span> are a minority between deported Ecuadorians.</div>
+        </div> 
+</div>
+
+    </div>
+    <div class="footer">
+        <div class="content">
+            <p>Scrollytelling homework.</p>
+        </div>
+    </div>
+</body>
+
+</html>
