@@ -24,43 +24,51 @@
             let svg;
 
             function drawSquares(data) {
+                d3.select("#svg-chart").select("svg").remove(); // clear previous
+
+                const container = d3.select("#svg-chart");
+                const width = container.node().getBoundingClientRect().width;
+                const height = window.innerHeight;
+
+                const totalSquares = data.length;
+
+                // Estimate square size to fill full height
+                let columns = Math.floor(Math.sqrt(totalSquares * width / height));
+                columns = Math.max(columns, 1);
+                let rows = Math.ceil(totalSquares / columns);
+                let squareSize = Math.floor(Math.min(width / columns, height / rows));
+
+                // If squareSize too small, reduce columns
+                while (squareSize < 4 && columns > 1) {
+                    columns -= 1;
+                    rows = Math.ceil(totalSquares / columns);
+                    squareSize = Math.floor(Math.min(width / columns, height / rows));
+                }
+
                 const spacing = 1;
-                const containerWidth = d3.select('#svg-chart').node().clientWidth || window.innerWidth;
-                const figureHeight = Math.min(window.innerHeight * 0.8, 640);
-                const dataLength = data.length;
+                const svgWidth = columns * (squareSize + spacing);
+                const svgHeight = rows * (squareSize + spacing);
 
-                let sizeGuess = 8;
-                let columns = Math.floor(containerWidth / (sizeGuess + spacing));
-                let rows = Math.ceil(dataLength / columns);
-                let size = Math.floor((figureHeight - (rows - 1) * spacing) / rows);
+                svg = container
+                    .append("svg")
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight)
+                    .style("display", "block")
+                    .style("margin", "0 auto");
 
-                columns = Math.floor(containerWidth / (size + spacing));
-                rows = Math.ceil(dataLength / columns);
-
-                const svgWidth = columns * (size + spacing) - spacing;
-                const svgHeight = rows * (size + spacing) - spacing;
-                const offsetX = (containerWidth - svgWidth) / 2;
-
-                // Remove previous SVG
-                d3.select('#svg-chart').selectAll('svg').remove();
-
-                // Create new SVG and assign to global svg
-                svg = d3.select('#svg-chart')
-                    .append('svg')
-                    .attr('width', svgWidth)
-                    .attr('height', svgHeight)
-                    .attr('viewBox', `0 0 ${svgWidth} ${svgHeight}`)
-                    .attr('preserveAspectRatio', 'xMidYMid meet');
-
-                svg.selectAll('rect')
+                svg.selectAll("rect")
                     .data(data)
-                    .join('rect')
-                    .attr('x', (d, i) => offsetX + (i % columns) * (size + spacing))
-                    .attr('y', (d, i) => Math.floor(i / columns) * (size + spacing))
-                    .attr('width', size)
-                    .attr('height', size)
-                    .attr('fill', 'lightgrey');
+                    .enter()
+                    .append("rect")
+                    .attr("x", (d, i) => (i % columns) * (squareSize + spacing))
+                    .attr("y", (d, i) => Math.floor(i / columns) * (squareSize + spacing))
+                    .attr("width", squareSize)
+                    .attr("height", squareSize)
+                    .attr("fill", "#999");
+
+                return svg;
             }
+
 
             d3.select('#svg-chart').selectAll('svg').remove();
             drawSquares(data);
