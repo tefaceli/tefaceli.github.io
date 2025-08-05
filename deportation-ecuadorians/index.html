@@ -15,71 +15,90 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <script src="https://unpkg.com/scrollama"></script>
 
-    <script>
+    <script>            
       d3.csv("deport_data.csv")
         .then(data => {
+
             console.log(data)
 
-            const size = 10;
-            const spacing = 1;
-            const width = 640;
-            const total = size + spacing;
-            const columns = Math.floor(width / total);
-            const offsetX = (width - columns * total) / 2;
-            const rows = Math.ceil(data.length / columns);
-            const height = rows * total;
+            let svg;
 
-            const myChart = d3
-                .select('#svg-chart') // select the div
-                .append('svg')
-                .attr('width', width)
-                .attr('height', height)
+            function drawSquares(data) {
+                const spacing = 1;
+                const containerWidth = d3.select('#svg-chart').node().clientWidth || window.innerWidth;
+                const figureHeight = Math.min(window.innerHeight * 0.8, 640);
+                const dataLength = data.length;
 
-            // create SVG elements binded with data
-            const squares = myChart
-                .selectAll('rect')
-                .data(data)
-                .join('rect')
-                    .attr('x', (d, i) => offsetX + (i % columns) * total)
-                    .attr('y', (d, i) => Math.floor(i / columns) * total)
+                let sizeGuess = 8;
+                let columns = Math.floor(containerWidth / (sizeGuess + spacing));
+                let rows = Math.ceil(dataLength / columns);
+                let size = Math.floor((figureHeight - (rows - 1) * spacing) / rows);
+
+                columns = Math.floor(containerWidth / (size + spacing));
+                rows = Math.ceil(dataLength / columns);
+
+                const svgWidth = columns * (size + spacing) - spacing;
+                const svgHeight = rows * (size + spacing) - spacing;
+                const offsetX = (containerWidth - svgWidth) / 2;
+
+                // Remove previous SVG
+                d3.select('#svg-chart').selectAll('svg').remove();
+
+                // Create new SVG and assign to global svg
+                svg = d3.select('#svg-chart')
+                    .append('svg')
+                    .attr('width', svgWidth)
+                    .attr('height', svgHeight)
+                    .attr('viewBox', `0 0 ${svgWidth} ${svgHeight}`)
+                    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+                svg.selectAll('rect')
+                    .data(data)
+                    .join('rect')
+                    .attr('x', (d, i) => offsetX + (i % columns) * (size + spacing))
+                    .attr('y', (d, i) => Math.floor(i / columns) * (size + spacing))
                     .attr('width', size)
                     .attr('height', size)
-                    .attr('fill', 'lightgrey'); 
+                    .attr('fill', 'lightgrey');
+            }
+
+            d3.select('#svg-chart').selectAll('svg').remove();
+            drawSquares(data);
 
             function showCriminals() {
-                myChart.selectAll('rect')
+                svg.selectAll('rect')
                     .transition()
                     .duration(500)
                     .attr('fill', d => {
-                    const status = d.case_criminality?.trim();
-                    if (status === '1 Convicted Criminal') return '#e63946';  
-                    if (status === '2 Pending Criminal Charges') return '#f1c40f';
-                    return 'lightgrey';  
+                        const status = d.case_criminality?.trim();
+                        if (status === '1 Convicted Criminal') return '#e63946';
+                        if (status === '2 Pending Criminal Charges') return '#f1c40f';
+                        return 'lightgrey';
                     });
-                }
+            }
 
             function showWomen() {
-                myChart.selectAll('rect')
+                svg.selectAll('rect')
                     .transition()
                     .duration(500)
                     .attr('fill', d => {
-                    const status = d.gender?.trim();
-                    if (status === 'Female') return '#9d4edd';  
-                    return 'lightgrey';  
+                        const status = d.gender?.trim();
+                        if (status === 'Female') return '#9d4edd';
+                        return 'lightgrey';
                     });
-                }
+            }
 
             function showAgeGroups() {
-                myChart.selectAll('rect')
+                svg.selectAll('rect')
                     .transition()
                     .duration(500)
                     .attr('fill', d => {
-                    const status = d.age_group?.trim();
-                    if (status === '21-30') return '#264653';  
-                    if (status === '31-40') return '#48cae4';
-                    return 'lightgrey';  
+                        const status = d.age_group?.trim();
+                        if (status === '21-30') return '#264653';
+                        if (status === '31-40') return '#48cae4';
+                        return 'lightgrey';
                     });
-                }
+            }
 
             // Start scrollama
             const scrolly = d3.select("#scroll-content");
@@ -91,19 +110,21 @@
 
             // generic window resize listener event
             function handleResize() {
-
-                // 1. update height of step elements
                 var stepH = Math.floor(window.innerHeight * 0.75);
                 step.style("height", stepH + "px");
 
-                var figureHeight = Math.min(window.innerHeight*0.8,640);
+                var figureHeight = Math.min(window.innerHeight * 0.8, 640);
                 var figureMarginTop = (window.innerHeight - figureHeight) / 2;
 
                 figure
                     .style("height", figureHeight + "px")
-                    .style("top", figureMarginTop + "px");
+                    .style("top", figureMarginTop + "px")
+                    .style("width", "100%")
+                    .style("max-width", "640px")
+                    .style("margin", "0 auto");
 
-                // 3. tell scrollama to update new element dimensions
+                drawSquares(data); // this will reset the svg variable
+
                 scroller.resize();
             }
 
@@ -154,6 +175,7 @@
     <style>
         body {
             margin: 0;
+            padding: 0;
             font-size: 20px;
             font-family: Georgia, 'Times New Roman', Times, serif;
             text-rendering: optimizeLegibility;
@@ -161,7 +183,7 @@
 
         .content {
             max-width: 640px;
-            margin: auto;
+            margin: 0 auto;
         }
 
         .header {
@@ -268,15 +290,16 @@
         }
 
         #scroll-content #svg-chart {
-            position: -webkit-sticky;
             position: sticky;
             left: 0;
             width: 100%;
-            margin: 0;
+            max-width: 640px;
+            height: 80vh; /*adjustable height to screen*/
+            margin: 0 auto;
             -webkit-transform: translate3d(0, 0, 0);
             -moz-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0);
-            background-color:#f9f9f9;
+            background-color: transparent;
             z-index: 0;
         }
 
@@ -303,24 +326,23 @@
     <div class="content">
         <div class="header">
             <h1>3.768 Ecuadorians deported from the US since Trump took office</h1>
-            <p class="subhead">bla bla bla bla.</p>
+            <p class="subhead">bla bla bl da sda sd as da sd as d as da sf a f dhf dgh d fh dfg hd fgh dfg hd fhg dfgh df ghd fhg fd hd fgh fd gh dfg hdf ghdfg hdr  th drt hd rth dr thd r nx b xf b dfb cx vbx fv b cv b a bla.</p>
         </div>
 
         <div class="byline">
             <p>By <a href="https://twitter.com/EstefaniaCeliR", target="_blank">Estefanía Celi</a></p>
         </div>
         
-        <p>Data from The Deportation Data Project.</p>
+        <p>Data from The Deportation Data Project. dfsdzsdgdf gz dfg zfgzdgzd fgzd fgzzd fgdf gdzf gzdgzdfg zdfg zdf ge rgrse rgs serg serg ser gs erg ser g er gse rgr ser gs erg ser gs egr ser g serg se rg ser gse rgs erg se rgs erg se rg se rg</p>
         
         <div id="scroll-content">  <!-- The overall container -->
-        <div id="svg-chart"></div> <!-- Your chart -->
-        <div id="text"> 
-            <div class="step">The majority of those being deported are not <span style="color: #e63946;"><strong>convicted criminals</strong></span> or <span style="color: #f1c40f;"><strong>pending criminal charges</strong></span>.</div>
-            <div class="step">Most of them are young adults, in the groups <span style="color: #264653;"><strong>from 21 to 30 years old</strong></span>, and <span style="color: #48cae4;"><strong>from 31 to 40 years old</strong></span>.</div>
-            <div class="step"><span style="color: #9d4edd;"><strong>Women</strong></span> are a minority between deported Ecuadorians.</div>
-        </div> 
-</div>
-
+            <div id="svg-chart"></div> <!-- Your chart -->
+            <div id="text"> 
+                <div class="step">The majority of those being deported are not <span style="color: #e63946;"><strong>convicted criminals</strong></span> or <span style="color: #f1c40f;"><strong>pending criminal charges</strong></span>.</div>
+                <div class="step">Most of them are young adults, in the groups <span style="color: #264653;"><strong>from 21 to 30 years old</strong></span>, and <span style="color: #48cae4;"><strong>from 31 to 40 years old</strong></span>.</div>
+                <div class="step"><span style="color: #9d4edd;"><strong>Women</strong></span> are a minority between deported Ecuadorians.</div>
+            </div> 
+        </div>
     </div>
     <div class="footer">
         <div class="content">
