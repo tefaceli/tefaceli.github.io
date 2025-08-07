@@ -27,22 +27,25 @@
                 d3.select("#svg-chart").select("svg").remove(); // clear previous
 
                 const container = d3.select("#svg-chart");
-                const width = Math.floor(container.node().getBoundingClientRect().width);
-                const height = Math.floor(window.innerHeight);
+                const isMobile = window.innerWidth <= 640;
+
+                const containerWidth = 600;
+                const containerHeight = isMobile ? 900 : window.innerHeight;
 
                 const totalSquares = data.length;
 
-                // Estimate square size to fill full height
-                let columns = Math.floor(Math.sqrt(totalSquares * width / height));
-                columns = Math.max(columns, 1);
-                let rows = Math.ceil(totalSquares / columns);
-                let squareSize = Math.floor(Math.min(width / columns, height / rows));
+                let squareSize = isMobile ? 0 : 7;
+                let columns, rows;
 
-                // If squareSize too small, reduce columns
-                while (squareSize < 4 && columns > 1) {
-                    columns -= 1;
+                if (isMobile) {
+                    // Try to fit squares into the fixed containerHeight
+                    columns = Math.floor(containerWidth / 10); // try 10px per square as starting point
+                    columns = Math.max(columns, 1);
                     rows = Math.ceil(totalSquares / columns);
-                    squareSize = Math.floor(Math.min(width / columns, height / rows));
+                    squareSize = Math.floor(Math.min(containerWidth / columns, containerHeight / rows));
+                } else {
+                    columns = Math.floor(containerWidth / (squareSize + 1));
+                    rows = Math.ceil(totalSquares / columns);
                 }
 
                 const spacing = 1;
@@ -68,7 +71,6 @@
                     .attr("fill", "#999");
 
                 return svg;
-
             }
 
 
@@ -123,18 +125,12 @@
                 var stepH = Math.floor(window.innerHeight * 0.75);
                 step.style("height", stepH + "px");
 
-                var figureHeight = Math.min(window.innerHeight * 0.8, 640);
-                var figureMarginTop = (window.innerHeight - figureHeight) / 2;
-
                 figure
-                    .style("height", figureHeight + "px")
-                    .style("top", figureMarginTop + "px")
                     .style("width", "100%")
-                    .style("max-width", "640px")
+                    .style("max-width", "600px")
                     .style("margin", "0 auto");
 
-                drawSquares(data); // this will reset the svg variable
-
+                drawSquares(data); // Redraw with updated logic
                 scroller.resize();
             }
 
@@ -277,13 +273,8 @@
 
         /* margin on mobile */
         @media (max-width: 640px) {
-            body {
-                font-size: 16px;
-            }
-
-            .content {
-                padding-left: 0.5em;
-                padding-right: 0.5em;
+            #scroll-content #svg-chart {
+                height: 900px;
             }
         }
 
@@ -302,15 +293,15 @@
 
         #scroll-content #svg-chart {
             position: sticky;
-            left: 0;
+            top: 0;
             width: 100%;
-            max-width: 640px;
-            height: 80vh; /*adjustable height to screen*/
-            margin: 0 auto;
-            -webkit-transform: translate3d(0, 0, 0);
-            -moz-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-            background-color: transparent;
+            max-width: 600px;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
             z-index: 0;
         }
 
@@ -320,40 +311,476 @@
             height: auto;
         }
 
-
-
         #scroll-content .step {
+            all: unset;
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            max-height: 100px;
             margin: 0 auto 1rem auto;
             margin-bottom: 30rem;
             padding: 0.5rem 1rem;
-            color: #fff;
             background-color: rgba(255, 255, 255, 0.8);
             color: black;
-            width: fit-content;
-            max-width: 100%;
-            height: auto !important;
-            min-height: 100px;
-            max-height: auto;
             text-align: center;
-            justify-content: center;
         }
 
     </style>
+
+    <!-- ai2html styles -->
+    <style media="screen,print">
+    #g-deportaciones-box {
+        container-type:inline-size;
+        container-name:g-deportaciones-box;
+    }
+    #g-deportaciones-box,
+    #g-deportaciones-box .g-artboard {
+        margin:0 auto;
+    }
+    #g-deportaciones-box p {
+        margin:0;
+    }
+    #g-deportaciones-box .g-aiAbs {
+        position:absolute;
+    }
+    #g-deportaciones-box .g-aiImg {
+        position:absolute;
+        top:0;
+        display:block;
+        width:100% !important;
+    }
+    #g-deportaciones-box .g-aiSymbol {
+        position:absolute;
+        box-sizing:border-box;
+    }
+    #g-deportaciones-box .g-aiPointText p {
+        white-space:nowrap;
+    }
+    #g-deportaciones-Artboard_1 {
+        position:relative;
+        overflow:hidden;
+    }
+    #g-deportaciones-Artboard_1 {
+        display:none;
+    }
+    @container g-deportaciones-box (width >= 640px) {
+    #g-deportaciones-Artboard_1 {
+        display:block;
+    }
+    }
+    #g-deportaciones-Artboard_1 p {
+        font-family:arial,helvetica,sans-serif;
+        font-weight:regular;
+        line-height:26px;
+        height:auto;
+        opacity:1;
+        letter-spacing:0em;
+        font-size:22px;
+        text-align:left;
+        color:rgb(0,0,0);
+        text-transform:none;
+        padding-bottom:0;
+        padding-top:0;
+        mix-blend-mode:normal;
+        font-style:normal;
+        position:static;
+    }
+    #g-deportaciones-Artboard_1 .g-pstyle0 {
+        font-weight:bold;
+        height:26px;
+    }
+    #g-deportaciones-Artboard_1 .g-pstyle1 {
+        line-height:14px;
+        height:14px;
+        font-size:12px;
+        color:rgb(162,162,162);
+    }
+    #g-deportaciones-Artboard_1 .g-pstyle2 {
+        font-weight:bold;
+        line-height:17px;
+        height:17px;
+        font-size:14px;
+    }
+    #g-deportaciones-Artboard_1 .g-pstyle3 {
+        line-height:14px;
+        height:14px;
+        font-size:12px;
+        color:rgb(116,116,116);
+    }
+    #g-deportaciones-Artboard_1 .g-pstyle4 {
+        line-height:13px;
+        height:13px;
+        font-size:11px;
+        color:rgb(136,136,136);
+    }
+    #g-deportaciones-Artboard_2 {
+        position:relative;
+        overflow:hidden;
+    }
+    @container g-deportaciones-box (width >= 640px) {
+    #g-deportaciones-Artboard_2 {
+        display:none;
+    }
+    }
+    #g-deportaciones-Artboard_2 p {
+        font-family:arial,helvetica,sans-serif;
+        font-weight:regular;
+        line-height:26px;
+        height:auto;
+        opacity:1;
+        letter-spacing:0em;
+        font-size:22px;
+        text-align:left;
+        color:rgb(0,0,0);
+        text-transform:none;
+        padding-bottom:0;
+        padding-top:0;
+        mix-blend-mode:normal;
+        font-style:normal;
+        position:static;
+    }
+    #g-deportaciones-Artboard_2 .g-pstyle0 {
+        font-weight:bold;
+        height:26px;
+    }
+    #g-deportaciones-Artboard_2 .g-pstyle1 {
+        line-height:11px;
+        height:11px;
+        font-size:9px;
+        color:rgb(162,162,162);
+    }
+    #g-deportaciones-Artboard_2 .g-pstyle2 {
+        font-weight:bold;
+        line-height:17px;
+        height:17px;
+        font-size:14px;
+    }
+    #g-deportaciones-Artboard_2 .g-pstyle3 {
+        line-height:14px;
+        height:14px;
+        font-size:12px;
+        color:rgb(116,116,116);
+    }
+    #g-deportaciones-Artboard_2 .g-pstyle4 {
+        line-height:13px;
+        height:13px;
+        font-size:11px;
+        color:rgb(136,136,136);
+    }
+
+    </style>
+
 </head>
 
 <body>
     <div class="content">
         <div class="header">
-            <h1>3.768 Ecuadorians deported from the US since Trump took office</h1>
-            <p class="subhead">bla bla bl da sda sd as da sd as d as da sf a f dhf dgh d fh dfg hd fgh dfg hd fhg dfgh df ghd fhg fd hd fgh fd gh dfg hdf ghdfg hdr  th drt hd rth dr thd r nx b xf b dfb cx vbx fv b cv b a bla.</p>
+            <h1>Behind the deported migrants: Who are the Ecuadorians expelled from the US?</h1>
+            <p class="subhead">Ecuador is the seventh country with the most migrant arrests in the United States since January 2025. Most have been detained in New York, the state with the largest Ecuadorian population. The deportees are mostly young men with no criminal record who arrived in the country within the last three years.</p>
         </div>
 
         <div class="byline">
             <p>By <a href="https://twitter.com/EstefaniaCeliR", target="_blank">Estefanía Celi</a></p>
         </div>
         
-        <p>Data from The Deportation Data Project. dfsdzsdgdf gz dfg zfgzdgzd fgzd fgzzd fgdf gdzf gzdgzdfg zdfg zdf ge rgrse rgs serg serg ser gs erg ser g er gse rgr ser gs erg ser gs egr ser g serg se rg ser gse rgs erg se rgs erg se rg se rg</p>
+        <p>Each week, hundreds of Ecuadorians are deported from the United States. Under the new policies of Donald Trump's administration, immigration enforcement has become stricter, directly affecting those who entered the country irregularly.</p>
+        <p>Data from the Immigration and Customs Enforcement agency (ICE), obtained by the Deportation Data Program at the University of California, Berkeley, shows a clear increase in operations. Since January 20 — the date Trump took office — daily arrests have tripled, peaking in June, when U.S. media reported raids across California.</p>
+        <p>Ecuador ranks eighth in total arrests since that date: 2,963 as of June 27. Although the government of Daniel Noboa has claimed that Ecuadorians are not a priority under the United States' strengthened immigration policies, the numbers show that the number of detained Ecuadorian migrants also peaked in 2025.</p>
         
+        <div id="g-deportaciones-box" class="ai2html">
+            <!-- Artboard: Artboard_1 desktop -->
+            <div id="g-deportaciones-Artboard_1" class="g-artboard" style="width:640px; height:500px;" data-aspect-ratio="1.28" data-min-width="640">
+                <div style=""></div>
+                <img id="g-deportaciones-Artboard_1-img" class="g-deportaciones-Artboard_1-img g-aiImg" alt="" loading="lazy" src="deportaciones-Artboard_1.png"/>
+                <div id="g-ai0-1" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:3.3156%;margin-top:-15.6px;left:1.2247%;width:325px;">
+                    <p class="g-pstyle0">Daily average detentions - all</p>
+                </div>
+                <div id="g-ai0-2" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:3.3156%;margin-top:-15.6px;left:52.2356%;width:295px;">
+                    <p class="g-pstyle0">Daily average detentions -</p>
+                </div>
+                <div id="g-ai0-3" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:8.3156%;margin-top:-15.6px;left:1.2247%;width:150px;">
+                    <p class="g-pstyle0">nationalities</p>
+                </div>
+                <div id="g-ai0-4" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:8.3156%;margin-top:-15.6px;left:52.2356%;width:244px;">
+                    <p class="g-pstyle0">Ecuadorian nationals</p>
+                </div>
+                <div id="g-ai0-5" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:14.0194%;margin-top:-8.1px;left:52.4529%;width:35px;">
+                    <p class="g-pstyle1">50</p>
+                </div>
+                <div id="g-ai0-6" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:15.2194%;margin-top:-8.1px;left:1.3093%;width:52px;">
+                    <p class="g-pstyle1">1,200</p>
+                </div>
+                <div id="g-ai0-7" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:21.2194%;margin-top:-8.1px;left:1.3093%;width:52px;">
+                    <p class="g-pstyle1">1,100</p>
+                </div>
+                <div id="g-ai0-8" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:21.2194%;margin-top:-8.1px;left:52.4529%;width:35px;">
+                    <p class="g-pstyle1">45</p>
+                </div>
+                <div id="g-ai0-9" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:27.0194%;margin-top:-8.1px;left:1.3093%;width:52px;">
+                    <p class="g-pstyle1">1,000</p>
+                </div>
+                <div id="g-ai0-10" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:28.6194%;margin-top:-8.1px;left:52.4529%;width:35px;">
+                    <p class="g-pstyle1">40</p>
+                </div>
+                <div id="g-ai0-11" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:33.0194%;margin-top:-8.1px;left:2.873%;width:42px;">
+                    <p class="g-pstyle1">900</p>
+                </div>
+                <div id="g-ai0-12" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:35.8194%;margin-top:-8.1px;left:52.4529%;width:35px;">
+                    <p class="g-pstyle1">35</p>
+                </div>
+                <div id="g-ai0-13" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:36.2281%;margin-top:-10.1px;left:80.3285%;width:69px;">
+                    <p class="g-pstyle2">Donald</p>
+                </div>
+                <div id="g-ai0-14" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:39.0194%;margin-top:-8.1px;left:2.873%;width:42px;">
+                    <p class="g-pstyle1">800</p>
+                </div>
+                <div id="g-ai0-15" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:39.6281%;margin-top:-10.1px;left:80.6927%;width:65px;">
+                    <p class="g-pstyle2">Trump</p>
+                </div>
+                <div id="g-ai0-16" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:43.0281%;margin-top:-10.1px;left:81.2375%;width:58px;">
+                    <p class="g-pstyle2">takes</p>
+                </div>
+                <div id="g-ai0-17" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:43.2194%;margin-top:-8.1px;left:52.4529%;width:35px;">
+                    <p class="g-pstyle1">30</p>
+                </div>
+                <div id="g-ai0-18" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:45.0281%;margin-top:-10.1px;left:19.4886%;width:69px;">
+                    <p class="g-pstyle2">Donald</p>
+                </div>
+                <div id="g-ai0-19" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:45.0194%;margin-top:-8.1px;left:2.873%;width:42px;">
+                    <p class="g-pstyle1">700</p>
+                </div>
+                <div id="g-ai0-20" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:46.4281%;margin-top:-10.1px;left:81.1179%;width:59px;">
+                    <p class="g-pstyle2">office</p>
+                </div>
+                <div id="g-ai0-21" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:48.4281%;margin-top:-10.1px;left:19.8528%;width:65px;">
+                    <p class="g-pstyle2">Trump</p>
+                </div>
+                <div id="g-ai0-22" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:50.4194%;margin-top:-8.1px;left:52.4529%;width:35px;">
+                    <p class="g-pstyle1">25</p>
+                </div>
+                <div id="g-ai0-23" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:51.0194%;margin-top:-8.1px;left:2.873%;width:42px;">
+                    <p class="g-pstyle1">600</p>
+                </div>
+                <div id="g-ai0-24" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:51.8281%;margin-top:-10.1px;left:20.3976%;width:58px;">
+                    <p class="g-pstyle2">takes</p>
+                </div>
+                <div id="g-ai0-25" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:55.2281%;margin-top:-10.1px;left:20.2779%;width:59px;">
+                    <p class="g-pstyle2">office</p>
+                </div>
+                <div id="g-ai0-26" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:57.0194%;margin-top:-8.1px;left:2.873%;width:42px;">
+                    <p class="g-pstyle1">500</p>
+                </div>
+                <div id="g-ai0-27" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:57.8194%;margin-top:-8.1px;left:52.4529%;width:35px;">
+                    <p class="g-pstyle1">20</p>
+                </div>
+                <div id="g-ai0-28" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:63.0194%;margin-top:-8.1px;left:2.873%;width:42px;">
+                    <p class="g-pstyle1">400</p>
+                </div>
+                <div id="g-ai0-29" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:65.0194%;margin-top:-8.1px;left:52.4529%;width:35px;">
+                    <p class="g-pstyle1">15</p>
+                </div>
+                <div id="g-ai0-30" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:69.0194%;margin-top:-8.1px;left:2.873%;width:42px;">
+                    <p class="g-pstyle1">300</p>
+                </div>
+                <div id="g-ai0-31" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:72.4194%;margin-top:-8.1px;left:52.4529%;width:35px;">
+                    <p class="g-pstyle1">10</p>
+                </div>
+                <div id="g-ai0-32" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:75.0194%;margin-top:-8.1px;left:2.873%;width:42px;">
+                    <p class="g-pstyle1">200</p>
+                </div>
+                <div id="g-ai0-33" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:79.6194%;margin-top:-8.1px;left:53.4956%;width:29px;">
+                    <p class="g-pstyle1">5</p>
+                </div>
+                <div id="g-ai0-34" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:81.0194%;margin-top:-8.1px;left:2.873%;width:42px;">
+                    <p class="g-pstyle1">100</p>
+                </div>
+                <div id="g-ai0-35" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:87.0194%;margin-top:-8.1px;left:4.9586%;width:29px;">
+                    <p class="g-pstyle1">0</p>
+                </div>
+                <div id="g-ai0-36" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:87.0194%;margin-top:-8.1px;left:53.4956%;width:29px;">
+                    <p class="g-pstyle1">0</p>
+                </div>
+                <div id="g-ai0-37" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:89.6194%;margin-top:-8.1px;left:12.0472%;width:61px;">
+                    <p class="g-pstyle3">Jan &rsquo;24</p>
+                </div>
+                <div id="g-ai0-38" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:89.6194%;margin-top:-8.1px;left:33.2586%;width:61px;">
+                    <p class="g-pstyle3">Jan &rsquo;25</p>
+                </div>
+                <div id="g-ai0-39" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:89.6194%;margin-top:-8.1px;left:61.0307%;width:61px;">
+                    <p class="g-pstyle3">Jan &rsquo;24</p>
+                </div>
+                <div id="g-ai0-40" class="g-Layer_1 g-aiAbs g-aiPointText" style="top:89.6194%;margin-top:-8.1px;left:83.6504%;width:61px;">
+                    <p class="g-pstyle3">Jan &rsquo;25</p>
+                </div>
+                <div id="g-ai0-41" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:96.3012%;margin-top:-7.5px;left:1.2247%;width:52px;">
+                    <p class="g-pstyle4">Chart:</p>
+                </div>
+                <div id="g-ai0-42" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:96.3012%;margin-top:-7.5px;left:6.3324%;width:90px;">
+                    <p class="g-pstyle4">Estefanía Celi</p>
+                </div>
+                <div id="g-ai0-43" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:96.3012%;margin-top:-7.5px;left:17.4606%;width:26px;">
+                    <p class="g-pstyle4">&bull;</p>
+                </div>
+                <div id="g-ai0-44" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:96.3012%;margin-top:-7.5px;left:18.4903%;width:60px;">
+                    <p class="g-pstyle4">Source:</p>
+                </div>
+                <div id="g-ai0-45" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:96.3012%;margin-top:-7.5px;left:24.8409%;width:150px;">
+                    <p class="g-pstyle4">Deportation Data Program</p>
+                </div>
+            </div>
+            <!-- Artboard: Artboard_2 mobile-->
+            <div id="g-deportaciones-Artboard_2" class="g-artboard" style="max-width: 320px;max-height: 800px" data-aspect-ratio="0.4" data-min-width="0" data-max-width="639">
+                <div style="padding: 0 0 250% 0;"></div>
+                <img id="g-deportaciones-Artboard_2-img" class="g-deportaciones-Artboard_2-img g-aiImg" alt="" loading="lazy" src="deportaciones-Artboard_2.png"/>
+                <div id="g-ai1-1" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:3.3223%;margin-top:-15.6px;left:3.125%;width:325px;">
+                    <p class="g-pstyle0">Daily average detentions - all</p>
+                </div>
+                <div id="g-ai1-2" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:6.4473%;margin-top:-15.6px;left:3.125%;width:150px;">
+                    <p class="g-pstyle0">nationalities</p>
+                </div>
+                <div id="g-ai1-3" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:10.3972%;margin-top:-6.2px;left:3.2941%;width:52px;">
+                    <p class="g-pstyle1">1,200</p>
+                </div>
+                <div id="g-ai1-4" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:13.1472%;margin-top:-6.2px;left:3.2941%;width:52px;">
+                    <p class="g-pstyle1">1,100</p>
+                </div>
+                <div id="g-ai1-5" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:15.8972%;margin-top:-6.2px;left:3.2941%;width:52px;">
+                    <p class="g-pstyle1">1,000</p>
+                </div>
+                <div id="g-ai1-6" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:18.6472%;margin-top:-6.2px;left:6.4215%;width:42px;">
+                    <p class="g-pstyle1">900</p>
+                </div>
+                <div id="g-ai1-7" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:21.2722%;margin-top:-6.2px;left:6.4215%;width:42px;">
+                    <p class="g-pstyle1">800</p>
+                </div>
+                <div id="g-ai1-8" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:24.1426%;margin-top:-10.1px;left:40.2777%;width:69px;">
+                    <p class="g-pstyle2">Donald</p>
+                </div>
+                <div id="g-ai1-9" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:24.0222%;margin-top:-6.2px;left:6.4215%;width:42px;">
+                    <p class="g-pstyle1">700</p>
+                </div>
+                <div id="g-ai1-10" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:26.1426%;margin-top:-10.1px;left:41.0062%;width:65px;">
+                    <p class="g-pstyle2">Trump</p>
+                </div>
+                <div id="g-ai1-11" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:26.7722%;margin-top:-6.2px;left:6.4215%;width:42px;">
+                    <p class="g-pstyle1">600</p>
+                </div>
+                <div id="g-ai1-12" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:28.2676%;margin-top:-10.1px;left:42.0956%;width:58px;">
+                    <p class="g-pstyle2">takes</p>
+                </div>
+                <div id="g-ai1-13" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:29.5222%;margin-top:-6.2px;left:6.4215%;width:42px;">
+                    <p class="g-pstyle1">500</p>
+                </div>
+                <div id="g-ai1-14" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:30.3926%;margin-top:-10.1px;left:41.8564%;width:59px;">
+                    <p class="g-pstyle2">office</p>
+                </div>
+                <div id="g-ai1-15" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:32.2722%;margin-top:-6.2px;left:6.4215%;width:42px;">
+                    <p class="g-pstyle1">400</p>
+                </div>
+                <div id="g-ai1-16" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:35.0222%;margin-top:-6.2px;left:6.4215%;width:42px;">
+                    <p class="g-pstyle1">300</p>
+                </div>
+                <div id="g-ai1-17" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:37.6472%;margin-top:-6.2px;left:6.4215%;width:42px;">
+                    <p class="g-pstyle1">200</p>
+                </div>
+                <div id="g-ai1-18" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:40.3972%;margin-top:-6.2px;left:6.4215%;width:42px;">
+                    <p class="g-pstyle1">100</p>
+                </div>
+                <div id="g-ai1-19" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:43.1472%;margin-top:-6.2px;left:10.5927%;width:29px;">
+                    <p class="g-pstyle1">0</p>
+                </div>
+                <div id="g-ai1-20" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:45.2621%;margin-top:-8.1px;left:24.7699%;width:61px;">
+                    <p class="g-pstyle3">Jan &rsquo;24</p>
+                </div>
+                <div id="g-ai1-21" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:45.2621%;margin-top:-8.1px;left:67.1927%;width:61px;">
+                    <p class="g-pstyle3">Jan &rsquo;25</p>
+                </div>
+                <div id="g-ai1-22" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:50.4473%;margin-top:-15.6px;left:3.9188%;width:295px;">
+                    <p class="g-pstyle0">Daily average detentions -</p>
+                </div>
+                <div id="g-ai1-23" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:53.5723%;margin-top:-15.6px;left:3.9188%;width:244px;">
+                    <p class="g-pstyle0">Ecuadorian nationals</p>
+                </div>
+                <div id="g-ai1-24" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:56.9137%;margin-top:-6.3px;left:4.353%;width:35px;">
+                    <p class="g-pstyle1">50</p>
+                </div>
+                <div id="g-ai1-25" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:60.2888%;margin-top:-6.3px;left:4.353%;width:35px;">
+                    <p class="g-pstyle1">45</p>
+                </div>
+                <div id="g-ai1-26" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:63.6638%;margin-top:-6.3px;left:4.353%;width:35px;">
+                    <p class="g-pstyle1">40</p>
+                </div>
+                <div id="g-ai1-27" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:67.0387%;margin-top:-6.3px;left:4.353%;width:35px;">
+                    <p class="g-pstyle1">35</p>
+                </div>
+                <div id="g-ai1-28" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:68.7676%;margin-top:-10.1px;left:56.9797%;width:69px;">
+                    <p class="g-pstyle2">Donald</p>
+                </div>
+                <div id="g-ai1-29" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:70.8926%;margin-top:-10.1px;left:57.7081%;width:65px;">
+                    <p class="g-pstyle2">Trump</p>
+                </div>
+                <div id="g-ai1-30" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:70.5388%;margin-top:-6.3px;left:4.353%;width:35px;">
+                    <p class="g-pstyle1">30</p>
+                </div>
+                <div id="g-ai1-31" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:73.0176%;margin-top:-10.1px;left:58.7976%;width:58px;">
+                    <p class="g-pstyle2">takes</p>
+                </div>
+                <div id="g-ai1-32" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:73.9138%;margin-top:-6.3px;left:4.353%;width:35px;">
+                    <p class="g-pstyle1">25</p>
+                </div>
+                <div id="g-ai1-33" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:75.1426%;margin-top:-10.1px;left:58.5583%;width:59px;">
+                    <p class="g-pstyle2">office</p>
+                </div>
+                <div id="g-ai1-34" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:77.2887%;margin-top:-6.3px;left:4.353%;width:35px;">
+                    <p class="g-pstyle1">20</p>
+                </div>
+                <div id="g-ai1-35" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:80.7888%;margin-top:-6.3px;left:4.353%;width:35px;">
+                    <p class="g-pstyle1">15</p>
+                </div>
+                <div id="g-ai1-36" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:84.1638%;margin-top:-6.3px;left:4.353%;width:35px;">
+                    <p class="g-pstyle1">10</p>
+                </div>
+                <div id="g-ai1-37" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:87.5387%;margin-top:-6.3px;left:6.4386%;width:29px;">
+                    <p class="g-pstyle1">5</p>
+                </div>
+                <div id="g-ai1-38" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:91.0388%;margin-top:-6.3px;left:6.4386%;width:29px;">
+                    <p class="g-pstyle1">0</p>
+                </div>
+                <div id="g-ai1-39" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:93.0121%;margin-top:-8.1px;left:21.5091%;width:61px;">
+                    <p class="g-pstyle3">Jan &rsquo;24</p>
+                </div>
+                <div id="g-ai1-40" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:93.0121%;margin-top:-8.1px;left:66.7484%;width:61px;">
+                    <p class="g-pstyle3">Jan &rsquo;25</p>
+                </div>
+                <div id="g-ai1-41" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:98.1882%;margin-top:-7.5px;left:3.2968%;width:52px;">
+                    <p class="g-pstyle4">Chart:</p>
+                </div>
+                <div id="g-ai1-42" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:98.1882%;margin-top:-7.5px;left:13.512%;width:90px;">
+                    <p class="g-pstyle4">Estefanía Celi</p>
+                </div>
+                <div id="g-ai1-43" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:98.1882%;margin-top:-7.5px;left:35.7684%;width:26px;">
+                    <p class="g-pstyle4">&bull;</p>
+                </div>
+                <div id="g-ai1-44" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:98.1882%;margin-top:-7.5px;left:37.8278%;width:60px;">
+                    <p class="g-pstyle4">Source:</p>
+                </div>
+                <div id="g-ai1-45" class="g-Layer_2 g-aiAbs g-aiPointText" style="top:98.1882%;margin-top:-7.5px;left:50.5289%;width:150px;">
+                    <p class="g-pstyle4">Deportation Data Program</p>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <p>In recent months, most Ecuadorians have been detained in the states of New York and New Jersey. In both states, they are the nationality with the highest number of arrests, as is the case in Connecticut.</p>
+        <p>In New York alone, 23 arrests on average are made on a daily basis since January 2025... of those, an average of 6 are Ecuadorians. However, there have been no large-scale raids reported there like those in California. <a href="https://www.nytimes.com/2025/08/04/nyregion/new-york-immigrant-arrests-trump.html?smid=nytcore-ios-share&referringSource=articleShare">The New York Times reported</a> that many of the arrests occur in Immigration Courts, where migrants are summoned to follow up on their legal proceedings.</p>
+
+        <iframe title="Arrests of Ecuadorian nationals since January 20, 2025" aria-label="Choropleth map" id="datawrapper-chart-qXfyD" src="https://datawrapper.dwcdn.net/qXfyD/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="483" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}})}();
+        </script>
+
+        <h2>The deported Ecuadorians</h2>
+        <p>Ecuador has been among the top countries with the most deportations from the United States for several years. According to <a href="https://www.ice.gov/statistics">ICE statistics</a>, in 2024, 12,921 Ecuadorian citizens were "removed," more than double the number deported in 2023: 5,651.</p>
+        <p>According to data from the Deportation Data Program, between January 20 and June 26, 3,768 Ecuadorians were deported from the United States. Of these, 68.78% had no criminal charges. The majority of those expelled are young men.</p>
+
         <div id="scroll-content">  <!-- The overall container -->
             <div id="svg-chart"></div> <!-- Your chart -->
             <div id="text"> 
@@ -362,6 +789,12 @@
                 <div class="step"><span style="color: #9d4edd;"><strong>Women</strong></span> are a minority between deported Ecuadorians.</div>
             </div> 
         </div>
+
+        <p>The majority of those deported under the Trump administration are individuals who entered the United States in 2023 and 2024: they make up 66%. In other words, most Ecuadorians who manage to enter the country irregularly are typically deported shortly afterward.</p>
+        <p>However, there are cases of Ecuadorians who had been in the United States for more than two years. One of the most notable cases is that of a 54-year-old man who arrived in August 2005 — 20 years ago. According to his record in ICE's database, he had a deportation order from that same year but had not been detained. This was common, and migrants were generally allowed to live in the country if they posed no threat and complied with regular check-ins.</p>
+        <p>Even so, he was detained in March 2025 in Newark, New Jersey, and deported on May 20, 2025. On that day, a total of 127 people were sent to Ecuador.</p>
+        <p>Most Ecuadorians have been deported back to their home country. But the data shows that 40 have been deported to Panama, 26 to Mexico, 18 to Colombia, and 21 to other countries. Among them is a 53-year-old Ecuadorian man, who had criminal charges and was in custody, and who was sent to El Salvador — a country that has agreed to accept deported individuals with criminal records.</p>
+
     </div>
     <div class="footer">
         <div class="content">
