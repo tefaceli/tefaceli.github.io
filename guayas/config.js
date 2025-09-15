@@ -101,9 +101,7 @@ var config = {
             hidden: false,
             title: 'Guayaquil',
             //image: './assets/',
-            description: `<p>El cantón Guayaquil, la capital de Guayas y la ciudad más poblada de Ecuador, concentra el 30% de los asesinatos a escala nacional entre enero y julio de 2025. Allí, el promedio es el más alto del país: siete víctimas al día o una cada 3 horas con 10 minutos.
-            </p>
-            <p>La violencia en este cantón se ha concentrado en tres parroquias: Pascuales, Tarqui y Ximena, en donde hay asesinatos casi todos los días.
+            description: `<p>El cantón Guayaquil concentra el 30% de los asesinatos a escala nacional entre enero y julio de 2025. Allí, el promedio es el más alto del país: siete víctimas al día o una cada 3 horas con 10 minutos. La violencia en este cantón concentra en tres parroquias: Pascuales, Tarqui y Ximena.
             </p><br>
             <h4 class="chart-title">Días con al menos una muerte violenta en las parroquias de Guayaquil</h4>
             <iframe title="Número de días con al menos un asesinato en 2025" aria-label="Mapa coroplético" id="datawrapper-chart-qJCUT" src="https://datawrapper.dwcdn.net/qJCUT/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="739" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}})}();
