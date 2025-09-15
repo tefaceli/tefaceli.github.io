@@ -292,7 +292,21 @@
         }
     </style>
 </head>
-
+<script>
+function sendHeight() {
+  if (window.parent !== window) {
+    window.parent.postMessage(
+      { type: 'setIframeHeight', height: document.body.scrollHeight },
+      '*'
+    );
+  }
+}
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+// If your content changes dynamically, you can also use a MutationObserver:
+const observer = new MutationObserver(sendHeight);
+observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+</script>
 <body>
     <!-- INTRO -->
     <section id="intro">
