@@ -16,14 +16,14 @@
             overflow-x: hidden;
             margin: 0;
             padding: 0;
-            height: 100%;
+            min-height: 100%;
             width: 100%;
         }
         body {
             font-family: sans-serif;
             margin: 0;
             padding: 0;
-            height: 100%;
+            min-height: 100%;
             width: 100%;
         }
         a,
@@ -33,18 +33,19 @@
         }
         /* Custom height logic for iframe embedding */
         #map {
-            position: absolute;
+            position: fixed;
+            top: 0;
             left: 0;
             width: 100%;
             z-index: 0;
-            height: calc(100dvh - 212.78px);
+            height: 100%;
+            min-height: 400px;
         }
-        .c-body--jugada #map {height: calc(100dvh - 177.61px);}
-        @media (max-width: 1199px) { .c-body--jugada #map {height: calc(100vh - 212.80px);}  }
-        @media (max-width: 991px) { .c-body--jugada #map {height: calc(100vh - 206.61px);}  }
-        @media (max-width: 1023px) { #map {height: calc(100vh - 177.38px);}  }
-        @media (max-width: 768px) {  #map {height: calc(100vh - 157.38px); }.c-body--jugada #map {height: calc(100vh - 186.61px);}  }
-        body{ overflow: hidden;}
+        .c-body--jugada #map {height: 100%;}
+        @media (max-width: 1199px) { .c-body--jugada #map {height: 100%;}  }
+        @media (max-width: 991px) { .c-body--jugada #map {height: 100%;}  }
+        @media (max-width: 1023px) { #map {height: 100%;}  }
+        @media (max-width: 768px) {  #map {height: 100%; }.c-body--jugada #map {height: 100%;}  }
         /* Hide elements for embed if needed */
         footer, .c-add, .c-detail_title_h1, #taboola-mid-article-thumbnails-stream, #taboola-below-article-thumbnails, #taboola-below-article-thumbnails-1,  .o-section[data-url="/deportes/estadistica-deportes-73926/"] {
         display: none !important;
