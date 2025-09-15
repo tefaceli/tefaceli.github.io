@@ -16,14 +16,12 @@
             overflow-x: hidden;
             margin: 0;
             padding: 0;
-            height: 100%;
             width: 100%;
         }
         body {
             font-family: sans-serif;
             margin: 0;
             padding: 0;
-            height: 100%;
             width: 100%;
         }
         a,
@@ -38,14 +36,13 @@
             left: 0;
             width: 100%;
             z-index: 0;
-            height: 100%;
-            min-height: 400px;
+            height: 100vh;
         }
-        .c-body--jugada #map {height: 100%;}
-        @media (max-width: 1199px) { .c-body--jugada #map {height: 100%;}  }
-        @media (max-width: 991px) { .c-body--jugada #map {height: 100%;}  }
-        @media (max-width: 1023px) { #map {height: 100%;}  }
-        @media (max-width: 768px) {  #map {height: 100%; }.c-body--jugada #map {height: 100%;}  }
+        .c-body--jugada #map {height: 100vh;}
+        @media (max-width: 1199px) { .c-body--jugada #map {height: 100vh;}  }
+        @media (max-width: 991px) { .c-body--jugada #map {height: 100vh;}  }
+        @media (max-width: 1023px) { #map {height: 100vh;}  }
+        @media (max-width: 768px) {  #map {height: 100vh; }.c-body--jugada #map {height: 100vh;}  }
         /* Hide elements for embed if needed */
         footer, .c-add, .c-detail_title_h1, #taboola-mid-article-thumbnails-stream, #taboola-below-article-thumbnails, #taboola-below-article-thumbnails-1,  .o-section[data-url="/deportes/estadistica-deportes-73926/"] {
         display: none !important;
@@ -73,8 +70,7 @@
             z-index: 1;
             text-align: center;
             width: 100%;
-            height: 100%;
-            min-height: 300px;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -450,7 +446,7 @@ observer.observe(document.body, { childList: true, subtree: true, attributes: tr
             features.appendChild(container);
         });
 
-        story.appendChild(features);
+    story.appendChild(features);
 
         var footer = document.createElement('div');
 
