@@ -59,21 +59,26 @@ var scroller=scrollama();
 map.on("load",function(){
   if(config.use3dTerrain){map.addSource('mapbox-dem',{type:'raster-dem',url:'mapbox://mapbox.mapbox-terrain-dem-v1',tileSize:512,maxzoom:14});map.setTerrain({source:'mapbox-dem',exaggeration:1.5});}
   scroller.offset(function(step){return Math.min(0.5,window.innerHeight/step.offsetHeight);});
-  scroller.setup({step:'.step',offset:0,progress:true})
-    .onStepEnter(response=>{
-      var current_chapter=config.chapters.findIndex(chap=>chap.id===response.element.id);
-      var chapter=config.chapters[current_chapter];
-      document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-      response.element.classList.add('active');
-      map[chapter.mapAnimation||'flyTo'](chapter.location);
-      if(config.showMarkers) marker.setLngLat(chapter.location.center);
-      if(chapter.onChapterEnter.length>0) chapter.onChapterEnter.forEach(setLayerOpacity);
-      if(chapter.callback) window[chapter.callback]();
-      if(chapter.rotateAnimation) map.once('moveend',()=>{var r=map.getBearing();map.rotateTo(r+180,{duration:30000,easing:t=>t});});
+  scroller
+    .setup({
+        step: '.step',
+        offset: 1,
+        progress: true
     })
-    .onStepExit(response=>{
-      var chapter=config.chapters.find(chap=>chap.id===response.element.id);
-      if(chapter.onChapterExit.length>0) chapter.onChapterExit.forEach(setLayerOpacity);
+    .onStepEnter(response => {
+        var current_chapter = config.chapters.findIndex(chap => chap.id === response.element.id);
+        var chapter = config.chapters[current_chapter];
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        response.element.classList.add('active');
+        map[chapter.mapAnimation || 'flyTo'](chapter.location);
+        if(config.showMarkers) marker.setLngLat(chapter.location.center);
+        if(chapter.onChapterEnter.length>0) chapter.onChapterEnter.forEach(setLayerOpacity);
+        if(chapter.callback) window[chapter.callback]();
+        if(chapter.rotateAnimation) map.once('moveend',()=>{ map.rotateTo(map.getBearing()+180, {duration:30000,easing:t=>t}); });
+    })
+    .onStepExit(response => {
+        var chapter = config.chapters.find(chap=>chap.id===response.element.id);
+        if(chapter.onChapterExit.length>0) chapter.onChapterExit.forEach(setLayerOpacity);
     });
   window.addEventListener('resize',scroller.resize);
 });
