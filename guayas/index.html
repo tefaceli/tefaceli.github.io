@@ -43,10 +43,8 @@
         }
 
         .step {
-            margin: 0;
-            padding: 25vh 0;
+            margin: 50vh 0; 
             opacity: 0.25;
-            transition: opacity 0.3s ease-out;
         }
 
         .step.active {
@@ -190,16 +188,7 @@
             }
 
             story.appendChild(container);
-
-            document.querySelectorAll('.step').forEach(step => {
-                const height = step.offsetHeight;
-                const extraPadding = Math.max(100, height / 3);
-                step.style.paddingTop = extraPadding + 'px';
-                step.style.paddingBottom = extraPadding + 'px';
-            });
-
         });
-
 
         mapboxgl.accessToken = config.accessToken;
 
