@@ -12,23 +12,48 @@
     <script src="https://cdn.jsdelivr.net/npm/mapbox-gl-globe-minimap@1.2.0/dist/bundle.js"></script>
     <script src="https://unpkg.com/scrollama"></script>
     <style>
-
         html, body {
             overflow-x: hidden;
-        }
-
-        body {
             margin: 0;
             padding: 0;
-            font-family: sans-serif;
+            height: 100%;
+            width: 100%;
         }
-
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
         a,
         a:hover,
         a:visited {
             color: #0071bc;
         }
-
+        /* Custom height logic for iframe embedding */
+        #map {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            z-index: 0;
+            height: calc(100dvh - 212.78px);
+        }
+        .c-body--jugada #map {height: calc(100dvh - 177.61px);}
+        @media (max-width: 1199px) { .c-body--jugada #map {height: calc(100vh - 212.80px);}  }
+        @media (max-width: 991px) { .c-body--jugada #map {height: calc(100vh - 206.61px);}  }
+        @media (max-width: 1023px) { #map {height: calc(100vh - 177.38px);}  }
+        @media (max-width: 768px) {  #map {height: calc(100vh - 157.38px); }.c-body--jugada #map {height: calc(100vh - 186.61px);}  }
+        body{ overflow: hidden;}
+        /* Hide elements for embed if needed */
+        footer, .c-add, .c-detail_title_h1, #taboola-mid-article-thumbnails-stream, #taboola-below-article-thumbnails, #taboola-below-article-thumbnails-1,  .o-section[data-url="/deportes/estadistica-deportes-73926/"] {
+        display: none !important;
+        }
+        main .o-container {max-width: 100% !important;}
+        @media (max-width: 767px) {.c-detail {padding-top: 0;}}
+        main .o-section{margin:0}
+        .trc_related_container {display:none}
+        /* ...existing code... */
         #intro {
             padding: 0;
             padding-bottom: 20px;
@@ -37,7 +62,6 @@
             position: relative;
             text-align: center;
         }
-
         #intro h1 {
             position: relative;
             font-size: 2.5rem;
@@ -56,7 +80,6 @@
             padding: 0 20px;
             box-sizing: border-box;
         }
-
         #intro h1::before {
             content: "";
             position: absolute;
@@ -318,6 +341,22 @@
 
     <script src="./config.js"></script>
     <script>
+        // Listen for postMessage events for map control
+        window.addEventListener('message', function(event) {
+            // Optionally check event.origin for security
+            const { action, payload } = event.data || {};
+            if (!action) return;
+            if (typeof map === 'undefined') return;
+            if (action === 'moveTo' && payload) {
+                // payload: {lat, lng, zoom}
+                map.flyTo({center: [payload.lng, payload.lat], zoom: payload.zoom});
+            }
+            if (action === 'setLayerVisibility' && payload) {
+                // payload: {layerId, visibility}
+                map.setLayoutProperty(payload.layerId, 'visibility', payload.visibility);
+            }
+            // Add more actions as needed
+        });
         var initLoad = true;
         var layerTypes = {
             'fill': ['fill-opacity'],
