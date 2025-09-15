@@ -147,7 +147,7 @@ var config = {
             //image: '',
             description: `<p>Pascuales, en el norte de Guayaquil, es la parroquia más afectada por la violencia a escala nacional. Entre enero y julio de 2025, suma 555 homicidios: que significan el 10% de todas las muertes violentas en el país. Esta parroquia es también una de las más densamente pobladas de la ciudad, aunque su número exacto de habitantes no consta en <a href="https://cubos.inec.gob.ec/AppCensoEcuador/">los resultados del censo 2022</a>.
             </p>
-            <p>Pascuales llegó a tener 21 días seguidos con asesinatos, entre el 21 de febrero y el 3 de marzo. En ese periodo, se registró también el día más violento del año para esta parroquia: el 23 de febrero, con 14 homicidios.
+            <p>Pascuales llegó a tener 21 días seguidos con asesinatos, entre el 21 de febrero y el 3 de marzo.
             </p>
             </script>`,
             location: {
@@ -226,7 +226,7 @@ var config = {
             </p>
             <p>En esa parroquia llegó a haber 23 asesinatos en un sólo día: el 6 de marzo de 2025. En los siete meses de 2025, en Tarqui hay una muerte violenta cada 12 horas y 45 minutos en promedio.
             </p>
-            <p>Allí, se concentran también barrios de mucha peligrosidad, como Socio Vivienda, en donde hasta julio hubo 59 muertes violentas.</p>
+            <p>Allí, se concentran también barrios de mucha peligrosidad, como Socio Vivienda</p>
             </script>`,
             location: {
                 center: [-79.92629, -2.16187],
@@ -270,9 +270,6 @@ var config = {
             description: `<p>Ximena, en el sur de Guayaquil, es la tercera parroquia con más muertes violentas entre enero y julio de 2025. Pero la diferencia es que en esta parroquia, la situación empeoró drásticamente en mayo, cuando se registraron 87 asesinatos en 26 días.
             </p>
             <p>En Ximena, el promedio es de una muerte violenta cada 15 horas. Y estos sucesos se concentran en barrios como Trinipuerto, Isla Trinitaria y Guasmo Norte.</p>
-            <br>
-            <h4 class="chart-title">El número de muertes violentas en las zonas de Ximena<h4>
-            <iframe title="El número de muertes violentas en las zonas de Ximena" aria-label="Gráfico de barras" id="datawrapper-chart-bXfjD" src="https://datawrapper.dwcdn.net/bXfjD/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="336" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}})}();
             </script>`,
             location: {
                 center: [-79.90182, -2.26355],
@@ -313,13 +310,9 @@ var config = {
             hidden: false,
             title: 'Durán',
             //image: './assets/j.jpg',
-            description: `<p>Durán, el vecino de Guayaquil, es el segundo cantón más violento de Guayas: entre enero y julio de 2025 suma ya 370 muertes violentas. Y aunque el número es bastante más bajo que el de Guayaquil, por tratarse de un cantón más pequeño, la violencia se siente mucho más cercana.
+            description: `<p>Durán, el vecino de Guayaquil, es el segundo cantón más violento de Guayas: entre enero y julio de 2025 suma ya 370 muertes violentas. Es así que en Durán tiene en promedio una muerte violenta cada 13 horas y 40 minutos, más que el promedio de Tarqui, en Guayaquil.
             </p>
-            <p>Es así que en Durán tiene en promedio una muerte violenta cada 13 horas y 40 minutos, más que el promedio de la parroquia Tarqui, en Guayaquil, aunque su población es muchísimo menor (330.000 habitantes según el censo 2022).
-            </p>
-            <p>En Durán incluso llegaron a tener un periodo de 21 días seguidos con al menos una muerte violenta: entre el 29 de marzo y el 18 de abril.
-            </p>
-            <p>De sus tres parroquias, la más afectada por la violencia ha sido Divino Niño, ubicada al norte de la avenida Nicolás Lappentti. Es en esta zona justamente donde más asesinatos se registran en estos primeros siete meses.
+            <p>De sus tres parroquias, la más afectada por la violencia ha sido Divino Niño, ubicada al norte de la avenida Nicolás Lappentti.
             </p>
             <h4 class="chart-title">El número de muertes violentas en las parroquias de Durán<h4>
             <iframe title="El número de muertes violentas en las parroquias de Durán" aria-label="Gráfico de barras" id="datawrapper-chart-98eid" src="https://datawrapper.dwcdn.net/98eid/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="120" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}})}();
