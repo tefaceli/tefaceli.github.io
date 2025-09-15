@@ -234,25 +234,23 @@
             var iframeHeight = window.innerHeight;
 
             document.querySelectorAll('.step').forEach(step => {
-                const height = step.offsetHeight;
-                const extraPadding = Math.max(100, height / 3);
+                const contentHeight = step.querySelector('div').offsetHeight;
+                const extraPadding = Math.min(contentHeight / 2, iframeHeight / 4);
                 step.style.paddingTop = extraPadding + 'px';
                 step.style.paddingBottom = extraPadding + 'px';
             });
-            
+
             scroller
                 .setup({
                     step: '.step',
-                    offset: 0.5,
+                    offset: 0.3,
                     progress: true
                 })
                 .onStepEnter(response => {
                     var current_chapter = config.chapters.findIndex(chap => chap.id === response.element.id);
                     var chapter = config.chapters[current_chapter];
 
-                    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
                     response.element.classList.add('active');
-
                     map[chapter.mapAnimation || 'flyTo'](chapter.location);
 
                     if (config.showMarkers) {
@@ -268,21 +266,20 @@
                         map.once('moveend', () => {
                             const rotateNumber = map.getBearing();
                             map.rotateTo(rotateNumber + 180, {
-                                duration: 30000, easing: function (t) {
-                                    return t;
-                                }
+                                duration: 30000, easing: t => t
                             });
                         });
                     }
                 })
                 .onStepExit(response => {
                     var chapter = config.chapters.find(chap => chap.id === response.element.id);
-                    response.element.classList.remove('active');
                     if (chapter.onChapterExit.length > 0) {
                         chapter.onChapterExit.forEach(setLayerOpacity);
                     }
                 });
         });
+
+
     </script>
 </body>
 </html>
