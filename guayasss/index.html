@@ -193,7 +193,7 @@
         .step {
             padding: 50vh 20px 50vh 20px;
             /* margin-bottom: 10vh; */
-            opacity: 1;
+            opacity: 0.9;
         }
 
         .step h3 {
@@ -211,7 +211,7 @@
         }
 
         .step.active {
-            opacity: 1;
+            opacity: 0.9;
         }
 
         .step div {
@@ -452,7 +452,7 @@
             scroller
                 .setup({
                     step: '.step',
-                    offset: 0.5,
+                    offset: 0.1,
                     progress: true
                 })
                 .onStepEnter(async response => {
