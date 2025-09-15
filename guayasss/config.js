@@ -52,7 +52,7 @@ var config = {
             alignment: 'center',
             hidden: false,
             title: 'Guayas',
-            image: "https://imagenes.primicias.ec/files/content_image_simple_583_325/uploads/2025/09/12/68c42fea7fdf6.jpeg",
+            //image: "https://imagenes.primicias.ec/files/content_image_simple_583_325/uploads/2025/09/12/68c42fea7fdf6.jpeg",
             description: `
                 <p>A escala nacional, Guayas es donde sus habitantes sienten la violencia más cercana, pues se vive a diario.
                 </p>
