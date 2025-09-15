@@ -231,11 +231,10 @@
                 map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
             }
 
-            var iframeHeight = window.innerHeight;
-
+            const iframeHeight = window.innerHeight;
             document.querySelectorAll('.step').forEach(step => {
-                const contentHeight = step.querySelector('div').offsetHeight;
-                const extraPadding = Math.min(contentHeight / 2, iframeHeight / 4);
+                const height = step.offsetHeight;
+                const extraPadding = Math.min(height / 3, iframeHeight / 2);
                 step.style.paddingTop = extraPadding + 'px';
                 step.style.paddingBottom = extraPadding + 'px';
             });
@@ -243,7 +242,7 @@
             scroller
                 .setup({
                     step: '.step',
-                    offset: 0.3,
+                    offset: 0,
                     progress: true
                 })
                 .onStepEnter(response => {
