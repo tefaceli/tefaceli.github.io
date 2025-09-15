@@ -335,7 +335,7 @@ var config = {
                  {
                      layer: 'duran-murders',
                      opacity: 1,
-                     duration: 3000
+                     duration: 100
                  }
             ],
             onChapterExit: [
