@@ -312,7 +312,7 @@ var config = {
             //image: './assets/j.jpg',
             description: `<p>Durán, el vecino de Guayaquil, es el segundo cantón más violento de Guayas: entre enero y julio de 2025 suma ya 370 muertes violentas. Es así que en Durán tiene en promedio una muerte violenta cada 13 horas y 40 minutos, más que el promedio de Tarqui, en Guayaquil.
             </p>
-            <p>De sus tres parroquias, la más afectada por la violencia ha sido Divino Niño, ubicada al norte de la avenida Nicolás Lappentti.
+            <p>De sus tres parroquias, la más afectada ha sido Divino Niño.
             </p>
             <h4 class="chart-title">El número de muertes violentas en las parroquias de Durán<h4>
             <iframe title="El número de muertes violentas en las parroquias de Durán" aria-label="Gráfico de barras" id="datawrapper-chart-98eid" src="https://datawrapper.dwcdn.net/98eid/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="120" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}})}();
@@ -359,9 +359,6 @@ var config = {
             description: `<p>Secap, que más que un barrio es un sector de la parroquia Divino Niño, de Durán, es el más afectado del cantón. Pero no sólo eso. Es la zona más violenta de todo el país en los primeros siete meses de 2025.
             </p>
             <p>En el sector Secap, entre enero y julio de 2025, se han registrado 124 asesinatos, un número mayor al de zonas como Paraíso de la Flor, Balerio Estacio o Socio Vivienda, en Guayaquil. Justamente en ese sector se ubica la cooperativa Ana María Olmedo, donde han sucedido varias masacres en estos últimos años.
-            </p>
-            <h4 class="chart-title">El número de muertes violentas en las zonas de Durán<h4>
-            <iframe title="El número de muertes violentas en las zonas de Durán" aria-label="Gráfico de barras" id="datawrapper-chart-Yhyim" src="https://datawrapper.dwcdn.net/Yhyim/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="336" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}})}();
             </script>
             `,
             location: {
