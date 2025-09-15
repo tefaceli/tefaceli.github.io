@@ -239,6 +239,10 @@
                 step.style.paddingBottom = extraPadding + 'px';
             });
 
+            scroller.offset(function(step) {
+                return Math.min(0.5, window.innerHeight / step.offsetHeight);
+            });
+
             scroller
                 .setup({
                     step: '.step',
