@@ -105,8 +105,6 @@ var config = {
             </p>
             <p>La violencia en este cantón se ha concentrado en tres parroquias: Pascuales, Tarqui y Ximena, en donde hay asesinatos casi todos los días.
             </p><br>
-            <h4 class="chart-title">Días con al menos una muerte violenta en las parroquias de Guayaquil</h4>
-            <iframe title="Número de días con al menos un asesinato en 2025" aria-label="Mapa coroplético" id="datawrapper-chart-qJCUT" src="https://datawrapper.dwcdn.net/qJCUT/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="739" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}})}();
             </script>`,
             location: {
                 center: [-79.92368, -2.16103],
@@ -151,9 +149,6 @@ var config = {
             </p>
             <p>Pascuales llegó a tener 21 días seguidos con asesinatos, entre el 21 de febrero y el 3 de marzo. En ese periodo, se registró también el día más violento del año para esta parroquia: el 23 de febrero, con 14 homicidios.
             </p>
-            <br>
-            <h4 class="chart-title">El número de muertes violentas en las zonas de Pascuales<h4>
-            <iframe title="El número de muertes violentas en las zonas de Pascuales" aria-label="Gráfico de barras" id="datawrapper-chart-CQD7h" src="https://datawrapper.dwcdn.net/CQD7h/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="336" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}})}();
             </script>`,
             location: {
                 center: [-79.95330, -2.05650],
@@ -193,7 +188,7 @@ var config = {
             alignment: 'center',
             hidden: false,
             title: 'Paraíso de la Flor',
-            image: 'https://imagenes.primicias.ec/files/main_image_832_468/uploads/2025/02/18/67b477fb2a07d.jpeg',
+            //image: 'https://imagenes.primicias.ec/files/main_image_832_468/uploads/2025/02/18/67b477fb2a07d.jpeg',
             description: `<p>Paraíso de la Flor, uno de los barrios de Pascuales, tiene las peores cifras del año. En los primeros siete meses de 2025, hubo 79 muertes violentas, lo que lo convierte en el barrio más peligroso de Guayaquil, sólo por debajo del centro de Pascuales (80).
             </p>
             <p>En esta zona de la ciudad han habido 50 días con al menos un asesinato. Varios de ellos están concentrados a lo largo de la avenida 24-A, la arteria principal de este sector.
@@ -232,9 +227,6 @@ var config = {
             <p>En esa parroquia llegó a haber 23 asesinatos en un sólo día: el 6 de marzo de 2025. En los siete meses de 2025, en Tarqui hay una muerte violenta cada 12 horas y 45 minutos en promedio.
             </p>
             <p>Allí, se concentran también barrios de mucha peligrosidad, como Socio Vivienda, en donde hasta julio hubo 59 muertes violentas.</p>
-            <br>
-            <h4 class="chart-title">El número de muertes violentas en las zonas de Tarqui<h4>
-            <iframe title="El número de muertes violentas en las zonas de Tarqui" aria-label="Gráfico de barras" id="datawrapper-chart-R4Czh" src="https://datawrapper.dwcdn.net/R4Czh/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="360" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}})}();
             </script>`,
             location: {
                 center: [-79.92629, -2.16187],
