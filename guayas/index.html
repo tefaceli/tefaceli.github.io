@@ -560,7 +560,29 @@ observer.observe(document.body, { childList: true, subtree: true, attributes: tr
             }
         });    
 
-    </script>
+        </script>
+        <!-- TEST: Show scrollable height for debugging -->
+        <script>
+            // Add a fixed bar at the bottom showing the scroll height and window height
+            const bar = document.createElement('div');
+            bar.style.position = 'fixed';
+            bar.style.left = '0';
+            bar.style.bottom = '0';
+            bar.style.width = '100vw';
+            bar.style.background = 'rgba(0,0,0,0.7)';
+            bar.style.color = 'white';
+            bar.style.fontSize = '14px';
+            bar.style.zIndex = '9999';
+            bar.style.pointerEvents = 'none';
+            bar.style.textAlign = 'center';
+            function updateBar() {
+                bar.textContent = `Scroll height: ${document.body.scrollHeight}px | Window height: ${window.innerHeight}px`;
+            }
+            updateBar();
+            window.addEventListener('resize', updateBar);
+            window.addEventListener('scroll', updateBar);
+            document.body.appendChild(bar);
+        </script>
 
 </body>
 
