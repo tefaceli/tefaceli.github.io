@@ -310,7 +310,7 @@ var config = {
             hidden: false,
             title: 'Durán',
             //image: './assets/j.jpg',
-            description: `<p>Durán, el vecino de Guayaquil, es el segundo cantón más violento de Guayas: entre enero y julio de 2025 suma ya 370 muertes violentas. Es así que en Durán tiene en promedio una muerte violenta cada 13 horas y 40 minutos, más que el promedio de Tarqui, en Guayaquil.
+            description: `<p>Durán es el segundo cantón más violento de Guayas: en siete meses suma ya 370 muertes violentas. Es así que tiene en promedio una muerte violenta cada 13 horas y 40 minutos, más que el promedio de Tarqui, en Guayaquil.
             </p>
             <p>De sus tres parroquias, la más afectada ha sido Divino Niño.
             </p>
@@ -358,7 +358,7 @@ var config = {
             //image: './assets/j.jpg',
             description: `<p>Secap, que más que un barrio es un sector de la parroquia Divino Niño, de Durán, es el más afectado del cantón. Pero no sólo eso. Es la zona más violenta de todo el país en los primeros siete meses de 2025.
             </p>
-            <p>En el sector Secap, entre enero y julio de 2025, se han registrado 124 asesinatos, un número mayor al de zonas como Paraíso de la Flor, Balerio Estacio o Socio Vivienda, en Guayaquil. Justamente en ese sector se ubica la cooperativa Ana María Olmedo, donde han sucedido varias masacres en estos últimos años.
+            <p>En el sector Secap, entre enero y julio de 2025, se han registrado 124 asesinatos, un número mayor al Paraíso de la Flor, Balerio Estacio o Socio Vivienda, en Guayaquil.
             </script>
             `,
             location: {
