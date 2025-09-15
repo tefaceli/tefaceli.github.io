@@ -1,97 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <title>En Guayas</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js"></script>
 <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/mapbox-gl-globe-minimap@1.2.0/dist/bundle.js"></script>
 <script src="https://unpkg.com/scrollama"></script>
 <style>
-body{margin:0;padding:0;font-family:sans-serif;overflow:hidden;}
-#map{position:fixed;top:0;width:100%;height:100vh;z-index:0;}
-#scroll-container{position:relative;z-index:1;height:100vh;overflow-y:scroll;}
-.step{opacity:0.25;transition:opacity 0.3s ease-out;margin-bottom:50px;}
-.step.active{opacity:1;}
-.step-content{padding:25px 50px;line-height:1.5;font-size:16px;background:rgba(255,255,255,0.95);border-radius:6px;box-shadow:0 4px 10px rgba(0,0,0,0.1);width:80%;max-width:800px;margin:0 auto;}
-.step img{width:100%;height:auto;}
-.centered{margin:0 auto;width:50%;}
-.lefty{width:33vw;margin-left:5vw;}
-.righty{width:33vw;margin-left:62vw;}
-.fully{width:100%;margin:auto;}
-@media(max-width:750px){.centered,.lefty,.righty,.fully{width:90vw;margin:0 auto;}.step-content{padding:20px 15px;font-size:14px;}}
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* prevent iframe scroll on body */
+  font-family: sans-serif;
+}
+
+#map {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#story {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  overflow-y: scroll; /* scroll content inside iframe */
+  -webkit-overflow-scrolling: touch;
+}
+
+#features {
+  margin: 0;
+  padding: 0;
+}
+
+.step {
+  min-height: 100vh; /* full viewport height to ensure trigger */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.25;
+  transition: opacity 0.3s ease-out;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.step.active {
+  opacity: 1;
+}
+
+.step-content {
+  background: rgba(255,255,255,0.95);
+  padding: 25px 40px;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  max-width: 800px;
+  width: 90%;
+  line-height: 1.5;
+}
+
+.step img {
+  width: 100%;
+  height: auto;
+}
+
+@media(max-width:750px){
+  .step-content {
+    padding: 20px 15px;
+    font-size: 14px;
+  }
+}
 </style>
 </head>
 <body>
+
 <div id="map"></div>
-<div id="scroll-container">
+<div id="story">
   <div id="features"></div>
 </div>
 
 <script src="./config.js"></script>
 <script>
-var layerTypes={'fill':['fill-opacity'],'line':['line-opacity'],'circle':['circle-opacity','circle-stroke-opacity'],'symbol':['icon-opacity','text-opacity'],'raster':['raster-opacity'],'fill-extrusion':['fill-extrusion-opacity'],'heatmap':['heatmap-opacity']};
-var alignments={'left':'lefty','center':'centered','right':'righty','full':'fully'};
-function getLayerPaintType(layer){return layerTypes[map.getLayer(layer).type];}
-function setLayerOpacity(layer){var paintProps=getLayerPaintType(layer.layer);paintProps.forEach(function(prop){var options={};if(layer.duration){var transitionProp=prop+"-transition";options={"duration":layer.duration};map.setPaintProperty(layer.layer,transitionProp,options);}map.setPaintProperty(layer.layer,prop,layer.opacity,options);});}
+mapboxgl.accessToken = config.accessToken;
 
-var story=document.getElementById('features');
-config.chapters.forEach((record,idx)=>{
-  var container=document.createElement('div');
-  container.classList.add('step');
-  container.classList.add(alignments[record.alignment]||'centered');
-  container.id=record.id;
-  if(idx===0) container.classList.add('active');
-  var content=document.createElement('div');
-  content.classList.add('step-content');
-  if(record.title){var h=document.createElement('h3');h.innerText=record.title;content.appendChild(h);}
-  if(record.image){var img=new Image();img.src=record.image;content.appendChild(img);}
-  if(record.description){var p=document.createElement('p');p.innerHTML=record.description;content.appendChild(p);}
+var map = new mapboxgl.Map({
+  container: 'map',
+  style: config.style,
+  center: config.chapters[0].location.center,
+  zoom: config.chapters[0].location.zoom,
+  bearing: config.chapters[0].location.bearing,
+  pitch: config.chapters[0].location.pitch,
+  interactive: false,
+  projection: config.projection
+});
+
+if(config.inset) map.addControl(new GlobeMinimap({...config.insetOptions}),config.insetPosition);
+if(config.showMarkers) var marker = new mapboxgl.Marker({color: config.markerColor}).setLngLat(config.chapters[0].location.center).addTo(map);
+
+// Build steps
+var story = document.getElementById('features');
+config.chapters.forEach((chap, idx) => {
+  var container = document.createElement('div');
+  container.className = 'step';
+  container.id = chap.id;
+
+  var content = document.createElement('div');
+  content.className = 'step-content';
+
+  if(chap.title){ var h = document.createElement('h3'); h.innerText = chap.title; content.appendChild(h); }
+  if(chap.image){ var img = new Image(); img.src = chap.image; content.appendChild(img); }
+  if(chap.description){ var p = document.createElement('p'); p.innerHTML = chap.description; content.appendChild(p); }
+
   container.appendChild(content);
   story.appendChild(container);
 });
 
-mapboxgl.accessToken=config.accessToken;
-var map=new mapboxgl.Map({container:'map',style:config.style,center:config.chapters[0].location.center,zoom:config.chapters[0].location.zoom,bearing:config.chapters[0].location.bearing,pitch:config.chapters[0].location.pitch,interactive:false,projection:config.projection});
-if(config.inset) map.addControl(new GlobeMinimap({...config.insetOptions}),config.insetPosition);
-if(config.showMarkers) var marker=new mapboxgl.Marker({color:config.markerColor}).setLngLat(config.chapters[0].location.center).addTo(map);
+// Scrollama
+var scroller = scrollama();
+scroller.setup({
+  step: '.step',
+  container: '#story',
+  offset: 0.5,
+  progress: false
+})
+.onStepEnter(response => {
+  var chap = config.chapters.find(c => c.id === response.element.id);
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  response.element.classList.add('active');
 
-var scroller=scrollama();
-map.on("load",function(){
-  if(config.use3dTerrain){map.addSource('mapbox-dem',{type:'raster-dem',url:'mapbox://mapbox.mapbox-terrain-dem-v1',tileSize:512,maxzoom:14});map.setTerrain({source:'mapbox-dem',exaggeration:1.5});}
+  map[chap.mapAnimation || 'flyTo'](chap.location);
+  if(config.showMarkers) marker.setLngLat(chap.location.center);
 
-  document.querySelectorAll('.step').forEach(step => {
-    const stepHeight = step.offsetHeight;
-    const vh = window.innerHeight;
-    const triggerOffset = Math.min(0.5, vh / stepHeight);
-    step.dataset.scrollamaOffset = triggerOffset;
+  if(chap.onChapterEnter.length) chap.onChapterEnter.forEach(layer => {
+    var paintProps = Object.keys(map.getLayer(layer.layer).paint || {});
+    paintProps.forEach(prop => map.setPaintProperty(layer.layer, prop, layer.opacity));
   });
-
-  scroller.setup({
-    step: '.step',
-    container: '#scroll-container',
-    offset: function(el){return parseFloat(el.dataset.scrollamaOffset) || 0.5;},
-    progress:true
-  })
-  .onStepEnter(response=>{
-    var current_chapter=config.chapters.findIndex(chap=>chap.id===response.element.id);
-    var chapter=config.chapters[current_chapter];
-    document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-    response.element.classList.add('active');
-    map[chapter.mapAnimation||'flyTo'](chapter.location);
-    if(config.showMarkers) marker.setLngLat(chapter.location.center);
-    if(chapter.onChapterEnter.length>0) chapter.onChapterEnter.forEach(setLayerOpacity);
-    if(chapter.callback) window[chapter.callback]();
-    if(chapter.rotateAnimation) map.once('moveend',()=>{map.rotateTo(map.getBearing()+180,{duration:30000,easing:t=>t});});
-  })
-  .onStepExit(response=>{
-    var chapter=config.chapters.find(chap=>chap.id===response.element.id);
-    if(chapter.onChapterExit.length>0) chapter.onChapterExit.forEach(setLayerOpacity);
+})
+.onStepExit(response => {
+  var chap = config.chapters.find(c => c.id === response.element.id);
+  if(chap.onChapterExit.length) chap.onChapterExit.forEach(layer => {
+    var paintProps = Object.keys(map.getLayer(layer.layer).paint || {});
+    paintProps.forEach(prop => map.setPaintProperty(layer.layer, prop, layer.opacity));
   });
-
-  window.addEventListener('resize',()=>scroller.resize());
 });
+
+window.addEventListener('resize', scroller.resize);
 </script>
+
 </body>
 </html>
