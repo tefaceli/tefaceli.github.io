@@ -52,7 +52,7 @@ var config = {
             alignment: 'center',
             hidden: false,
             title: 'Guayas',
-            //image: "https://imagenes.primicias.ec/files/content_image_simple_583_325/uploads/2025/09/12/68c42fea7fdf6.jpeg",
+            //image: '',
             description: `
                 <p>A escala nacional, Guayas es donde sus habitantes sienten la violencia más cercana, pues se vive a diario.
                 </p>
@@ -100,7 +100,7 @@ var config = {
             alignment: 'center',
             hidden: false,
             title: 'Guayaquil',
-            //image: './assets/',
+            //image: '',
             description: `<p>El cantón Guayaquil, la capital de Guayas y la ciudad más poblada de Ecuador, concentra el 30% de los asesinatos a escala nacional entre enero y julio de 2025. Allí, el promedio es el más alto del país: siete víctimas al día o una cada 3 horas con 10 minutos.
             </p>
             <h4 class="chart-title">Días con al menos una muerte violenta en las parroquias de Guayaquil</h4>
@@ -188,7 +188,7 @@ var config = {
             alignment: 'center',
             hidden: false,
             title: 'Paraíso de la Flor',
-            //image: 'https://imagenes.primicias.ec/files/main_image_832_468/uploads/2025/02/18/67b477fb2a07d.jpeg',
+            //image: '',
             description: `<p>Paraíso de la Flor, uno de los barrios de Pascuales, tiene las peores cifras del año. En los primeros siete meses de 2025, hubo 79 muertes violentas, lo que lo convierte en el barrio más peligroso de Guayaquil, sólo por debajo del centro de Pascuales (80).
             </p>
             <p>En esta zona de la ciudad han habido 50 días con al menos un asesinato. Varios de ellos están concentrados a lo largo de la avenida 24-A, la arteria principal de este sector.
@@ -309,7 +309,7 @@ var config = {
             alignment: 'center',
             hidden: false,
             title: 'Durán',
-            //image: './assets/j.jpg',
+            //image: '',
             description: `<p>Durán es el segundo cantón más violento de Guayas: en siete meses suma ya 370 muertes violentas. Es así que tiene en promedio una muerte violenta cada 13 horas y 40 minutos, más que el promedio de Tarqui, en Guayaquil.
             </p>
             <p>De sus tres parroquias, la más afectada ha sido Divino Niño.
@@ -355,7 +355,7 @@ var config = {
             alignment: 'center',
             hidden: false,
             title: 'El sector Secap',
-            //image: './assets/j.jpg',
+            //image: '',
             description: `<p>Secap, que más que un barrio es un sector de la parroquia Divino Niño, de Durán, es el más afectado del cantón. Pero no sólo eso. Es la zona más violenta de todo el país en los primeros siete meses de 2025.
             </p>
             <p>En el sector Secap, entre enero y julio de 2025, se han registrado 124 asesinatos, un número mayor al Paraíso de la Flor, Balerio Estacio o Socio Vivienda, en Guayaquil.
