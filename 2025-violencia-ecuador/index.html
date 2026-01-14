@@ -483,24 +483,22 @@
         dateBg.transition().duration(600).attr("opacity", 0);
     }, totalAnimationTime + 2000);
 
-    // --- COLORES PUNTOS ---
     const COLORS = {
-        masc: "#4e79a7",
-        fem: "#e15759",
-        trans: "#59a14f",
-        nino: "#f28e2b",
-        adolescente: "#9ad0f5",
-        jovenes: "#f7dc6f",
-        aduljov: "#f1c40f",
-        casa: "#af7aa1",
-        via_publica: "#76b7b2",
-        arma_fuego: "#4c78a8",
-        arma_blanca: "#bab0ab",
-        delincuencia: "#e17c05",
-        muted: "#555555"
+      masc: "#4e79a7",
+      fem: "#e15759",
+      trans: "#59a14f",
+      nino: "#f28e2b",
+      adolescente: "#9ad0f5",
+      jovenes: "#f7dc6f",
+      aduljov: "#f1c40f",
+      casa: "#af7aa1",
+      via_publica: "#76b7b2",
+      arma_fuego: "#4c78a8",
+      arma_blanca: "#bab0ab",
+      delincuencia: "#e17c05",
+      muted: "#555555"
     };
 
-    // --- FUNCIONES RESTAURADAS CON OPTIMIZACIÓN MÓVIL ---
     const isMobile = window.innerWidth < 768;
     const duracion = isMobile ? 0 : 600; 
 
@@ -604,6 +602,18 @@
     }
     window.paintDefault = paintDefault;
 
+    function forceFinishAnimation() {
+        if (animationFinished) return;
+        animationFinished = true;
+        points.interrupt(); 
+        points
+            .attr("r", pointRadius)
+            .attr("opacity", 0.9)
+            .attr("fill", "#b03a2e");
+        dateLabel.style("opacity", 0);
+        dateBg.style("opacity", 0);
+    }
+
     // --- OBSERVER STEPS ---
     const steps = document.querySelectorAll(".step");
 
@@ -612,6 +622,8 @@
         entries.forEach(entry => {
             if (entry.isIntersecting) {
             const step = entry.target.dataset.step;
+
+            forceFinishAnimation();
 
             if (step === "scrolly1-genero") {
                 window.paintGenero();
