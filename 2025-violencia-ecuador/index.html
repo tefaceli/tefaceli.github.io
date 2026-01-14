@@ -3,25 +3,240 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ecuador 2025: El año más violento | Primicias</title>
-  <meta name="description" content="Visualización interactiva de las 9.000 muertes violentas registradas en Ecuador durante 2025. Un análisis visual de la crisis de seguridad.">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
 
+    #especial-violencia-2025 {
+      margin: 0;
+      padding: 0;
+      padding-bottom: 5px;
+      background: #000;
+      color: #fff;
+      font-family: sans-serif;
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+    }
 
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Ecuador 2025: El año más violento">
-  <meta property="og:description" content="Mira el mapa interactivo de las 9.000 vidas perdidas este año. Especial de Primicias.">
-  
-  <meta property="og:image" content="https://imagenes.primicias.ec/files/main_image_832_468/files/fp/uploads/2025/10/21/68f7e892570ed.r_d.1366-1315.jpeg">
-  
-  <link rel="stylesheet" href="styles-violencia-2025.css">
+    #especial-violencia-2025 *,
+    #especial-violencia-2025 *::before,
+    #especial-violencia-2025 *::after {
+      box-sizing: border-box;
+    }
 
+    #especial-violencia-2025 #site-header {
+      position: sticky;
+      top: 0;
+      height: 64px;
+      width: 100%;
+      background-color: #222222;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0;
+      z-index: 1000;
+    }
+
+    #especial-violencia-2025 .site-logo {
+      height: 28px;
+      width: auto;
+      display: block;
+      padding: 0 16px;
+    }
+
+    #especial-violencia-2025 #content-wrapper {
+      margin-top: 0px;
+    }
+
+    #especial-violencia-2025 .scrolly {
+      position: relative;
+      z-index: 5;
+    }
+
+    #especial-violencia-2025 .scrolly-steps {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    #especial-violencia-2025 .step {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #especial-violencia-2025 .step p {
+      background: rgba(0, 0, 0, 0.65);
+      padding: 30px 28px;
+      border-radius: 6px;
+      margin: 0;
+      font-family: Georgia, serif;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    #especial-violencia-2025 .scrolly-steps .step:first-child {
+      margin-top: 30vh;
+    }
+
+    #especial-violencia-2025 .step[data-step="scrolly1-edad2"],
+    #especial-violencia-2025 .step[data-step="scrolly2-motivacion"] {
+      padding-bottom: 0;
+      margin-bottom: 50vh;
+    }
+
+    #especial-violencia-2025 .text-background {
+      position: relative;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 1.5rem 1.5rem;
+      margin: 0.5rem auto;
+      box-sizing: border-box;
+      border-radius: 8px;
+      z-index: 5;
+    }
+
+    #especial-violencia-2025 .text-background p {
+      color: #ffffff;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    #especial-violencia-2025 #dots-background {
+      position: sticky;
+      top: 64px;
+      height: calc(100dvh - 64px);
+      width: 100%;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    #especial-violencia-2025 #svg-chart {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    #especial-violencia-2025 #titular {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 720px;
+      text-align: center;
+      background: rgba(0,0,0,0.6);
+      padding: 20px 30px;
+      border-radius: 5px;
+      font-family: Georgia, serif;
+      z-index: 10;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    #especial-violencia-2025 #titular h1 {
+      margin: 0 0 15px 0;
+      font-size: 32px;
+    }
+
+    #especial-violencia-2025 #titular h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: normal;
+      color: #ccc;
+    }
+
+    #especial-violencia-2025 .article {
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 60px 20px;
+      font-family: Georgia, serif;
+      line-height: 1.6;
+      z-index: 5;
+    }
+
+    #especial-violencia-2025 #scroll-hint {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #ccc;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    #especial-violencia-2025 .legend {
+      font-weight: 600;
+    }
+
+    @media (max-width: 480px) {
+      #especial-violencia-2025 #site-header {
+        padding: 0;
+      }
+      
+      #especial-violencia-2025 .site-logo {
+        height: 24px;
+      }
+
+      #especial-violencia-2025 #titular {
+        width: 90%;
+        padding: 20px;
+      }
+
+      #especial-violencia-2025 #titular h1 {
+        font-size: 26px;
+        line-height: 1.3;
+      }
+
+      #especial-violencia-2025 #titular h2 {
+        font-size: 16px;
+        line-height: 1.4;
+        margin-top: 8px;
+      }
+
+      #especial-violencia-2025 #scroll-hint {
+        text-align: center;
+        width: 100%;
+      }
+
+      #especial-violencia-2025 .article {
+        font-size: 19px;
+        line-height: 1.7;
+        padding: 40px 20px 120px;
+      }
+
+      #especial-violencia-2025 .step p {
+        font-size: 20px;
+        line-height: 1.5;
+        padding: 25px 20px;
+        background: rgba(0, 0, 0, 0.8);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      }
+
+      #especial-violencia-2025 .scrolly-steps .step {
+        min-height: 90vh;
+      }
+    }
+
+  </style>
 </head>
 
 <body>
   <div id="especial-violencia-2025">
     <header id="site-header">
       <a href="https://www.primicias.ec" aria-label="Ir a Primicias">
-        <img src="LogoPrimiciasColor.png" alt="Primicias" class="site-logo">
+        <img src="https://primicias.s3.us-east-1.amazonaws.com/logo-primicias-blanco.svg" alt="Primicias" class="site-logo">
       </a>
     </header>
 
@@ -138,8 +353,339 @@
     </div>
   </div>
 
+  <script>
+    var data = "https://pre.primicias.ec/uploads/files/2026/01/13/data-violencia-2025-3.csv"
+  </script>
+
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="script-violencia-2025.js"></script>
+  <script>
+
+    const scrollHint = document.getElementById('scroll-hint');
+
+    const header_height = 64;
+    const width = window.innerWidth;
+    const height = window.innerHeight - header_height;
+
+    const margin = { top: 10, right: 10, bottom: 10, left: 10 };
+
+    const svg = d3.select("#svg-chart")
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet")
+        .style("width", "100%")
+        .style("height", "100%")
+        .style("background", "#000");
+
+    d3.csv(data).then(data => {
+
+    console.log("Filas totales:", data.length);
+
+    const parseDate = d3.timeParse("%Y-%m-%d");
+    const formatDate = d3.timeFormat("%d-%m-%Y");
+
+    data.forEach(d => {
+        d.fecha = parseDate(d.fecha_muerte);
+    });
+
+    data.sort((a, b) => a.fecha - b.fecha);
+
+    const usableWidth = width - margin.left - margin.right;
+    const usableHeight = height - margin.top - margin.bottom;
+
+    const totalPoints = data.length;
+
+    const cols = Math.ceil(Math.sqrt(totalPoints * (usableWidth / usableHeight)));
+    const rows = Math.ceil(totalPoints / cols);
+
+    const spacingFactor = 0.85; 
+
+    const cellWidth = usableWidth / cols;
+    const cellHeight = usableHeight / rows;
+
+    const pointRadius = Math.min(cellWidth, cellHeight) / 2 * spacingFactor;
+
+    const points = svg.selectAll("circle")
+        .data(data)
+        .join("circle")
+        .attr("cx", (d, i) => {
+        const col = i % cols;
+        return margin.left + col * cellWidth + cellWidth / 2;
+        })
+        .attr("cy", (d, i) => {
+        const row = Math.floor(i / cols);
+        return margin.top + row * cellHeight + cellHeight / 2;
+        })
+        .attr("r", 0)
+        .attr("fill", "#b03a2e")
+        .attr("opacity", 0);
+
+    const dateBgWidth = 125;
+    const dateBgHeight = 28;
+
+    const dateBg = svg.append("rect")
+        .attr("x", width - margin.right - dateBgWidth)
+        .attr("y", margin.top)
+        .attr("width", dateBgWidth)
+        .attr("height", dateBgHeight)
+        .attr("fill", "rgba(0,0,0,0.6)")
+        .attr("rx", 4)
+        .attr("ry", 4);
+
+    const dateLabel = svg.append("text")
+        .attr("x", width - margin.right - 5)
+        .attr("y", margin.top + dateBgHeight / 2 + 5)
+        .attr("text-anchor", "end")
+        .attr("fill", "#ffffff")
+        .attr("font-size", "20px")
+        .attr("font-family", "Inter, system-ui, sans-serif")
+        .attr("font-weight", 500)
+        .attr("opacity", 0.9)
+        .text("");
+
+    const delayPerPoint = 1.8;
+    const growDuration = 200;
+
+    const groupedByDate = d3.groups(data, d => formatDate(d.fecha));
+
+    let index = 0;
+
+    groupedByDate.forEach(([fechaStr, puntosDeDia]) => {
+        puntosDeDia.forEach((d) => {
+        points
+            .filter(p => p === d)
+            .transition()
+            .delay(400 + index * delayPerPoint)
+            .duration(growDuration)
+            .ease(d3.easeLinear)
+            .attr("r", pointRadius)
+            .attr("opacity", 0.9);
+        index++;
+        });
+        setTimeout(() => {
+        dateLabel.text(fechaStr);
+        }, (index - puntosDeDia.length) * delayPerPoint);
+    });
+
+    let animationFinished = false;
+
+    const totalAnimationTime =
+        index * delayPerPoint + growDuration;
+
+    setTimeout(() => {
+        animationFinished = true;
+    }, totalAnimationTime);
+
+    setTimeout(() => {
+        scrollHint.style.opacity = 1;
+    }, 3000);
+
+    setTimeout(() => {
+        dateLabel.transition().duration(600).attr("opacity", 0);
+        dateBg.transition().duration(600).attr("opacity", 0);
+    }, totalAnimationTime + 2000);
+
+    // --- COLORES PUNTOS ---
+    const COLORS = {
+        masc: "#4e79a7",
+        fem: "#e15759",
+        trans: "#59a14f",
+        nino: "#f28e2b",
+        adolescente: "#9ad0f5",
+        jovenes: "#f7dc6f",
+        aduljov: "#f1c40f",
+        casa: "#af7aa1",
+        via_publica: "#76b7b2",
+        arma_fuego: "#4c78a8",
+        arma_blanca: "#bab0ab",
+        delincuencia: "#e17c05",
+        muted: "#555555"
+    };
+
+    // --- FUNCIONES RESTAURADAS CON OPTIMIZACIÓN MÓVIL ---
+    const isMobile = window.innerWidth < 768;
+    const duracion = isMobile ? 0 : 600; 
+
+    function paintGenero() {
+        points
+        .transition()
+        .duration(duracion)
+        .attr("fill", d => {
+            if (d.genero === "m") return COLORS.masc;
+            if (d.genero === "f") return COLORS.fem;
+            if (d.genero === "t") return COLORS.trans;
+            return COLORS.muted;
+        })
+        .attr("opacity", d =>
+            (d.genero === "m" || d.genero === "f" || d.genero === "t") ? 0.9 : 0.25
+        );
+    }
+    window.paintGenero = paintGenero;
+
+    function paintEdad1() {
+        points
+        .transition()
+        .duration(duracion)
+        .attr("fill", d => {
+            if (d.edad_rango === "0–11") return COLORS.nino;
+            if (d.edad_rango === "12–17") return COLORS.adolescente;
+            return COLORS.muted;
+        })
+        .attr("opacity", d =>
+            (d.edad_rango === "0–11" || d.edad_rango === "12–17") ? 0.9 : 0.25
+        );
+    }
+    window.paintEdad1 = paintEdad1;
+
+    function paintEdad2() {
+        points
+        .transition()
+        .duration(duracion)
+        .attr("fill", d => {
+            if (d.edad_rango === "18–29") return COLORS.jovenes;
+            if (d.edad_rango === "30–44") return COLORS.aduljov;
+            return COLORS.muted;
+        })
+        .attr("opacity", d =>
+            (d.edad_rango === "18–29" || d.edad_rango === "30–44") ? 0.9 : 0.25
+        );
+    }
+    window.paintEdad2 = paintEdad2;
+
+    function paintLugar() {
+        points
+        .transition()
+        .duration(duracion)
+        .attr("fill", d => {
+            if (d.lugar === "VÍA PÚBLICA") return COLORS.via_publica;
+            if (d.lugar === "CASA/VILLA") return COLORS.casa;
+            return COLORS.muted;
+        })
+        .attr("opacity", d =>
+            (d.lugar === "VÍA PÚBLICA" || d.lugar === "CASA/VILLA") ? 0.9 : 0.25
+        );
+    }
+    window.paintLugar = paintLugar;
+
+    function paintArma() {
+        points
+        .transition()
+        .duration(duracion)
+        .attr("fill", d => {
+            if (d.arma === "ARMA DE FUEGO") return COLORS.arma_fuego;
+            if (d.arma === "ARMA BLANCA") return COLORS.arma_blanca;
+            return COLORS.muted;
+        })
+        .attr("opacity", d =>
+            (d.arma === "ARMA DE FUEGO" || d.arma === "ARMA BLANCA") ? 0.9 : 0.25
+        );
+    }
+    window.paintArma = paintArma;
+
+    function paintMotiv() {
+        points
+        .transition()
+        .duration(duracion)
+        .attr("fill", d => {
+            if (d.presunta_motivacion === "DELINCUENCIA COMUN") return COLORS.delincuencia;
+            return COLORS.muted;
+        })
+        .attr("opacity", d =>
+            (d.presunta_motivacion === "DELINCUENCIA COMUN") ? 0.9 : 0.25
+        );
+    }
+    window.paintMotiv = paintMotiv;
+
+    function paintDefault() {
+        if (!animationFinished) return;
+        points
+        .transition()
+        .duration(duracion)
+        .attr("fill", "#b03a2e")
+        .attr("opacity", 0.9);
+    }
+    window.paintDefault = paintDefault;
+
+    // --- OBSERVER STEPS ---
+    const steps = document.querySelectorAll(".step");
+
+    const stepObserver = new IntersectionObserver(
+        (entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+            const step = entry.target.dataset.step;
+
+            if (step === "scrolly1-genero") {
+                window.paintGenero();
+            } else if (step === "scrolly1-edad1") {
+                window.paintEdad1();
+            } else if (step === "scrolly1-edad2") {
+                window.paintEdad2();
+            } else if (step === "scrolly2-lugar") {
+                window.paintLugar();
+            } else if (step === "scrolly2-arma") {
+                window.paintArma();
+            } else if (step === "scrolly2-motivacion") {
+                window.paintMotiv();
+            }
+            }
+        });
+        },
+        {
+        root: null,
+        threshold: 0.6
+        }
+    );
+
+    steps.forEach(step => stepObserver.observe(step));
+
+    }).catch(err => {
+    console.error("Error cargando CSV:", err);
+    });
+
+    // --- OBSERVER FASES ---
+    const titular = document.getElementById("titular");
+
+    const phases = document.querySelectorAll("section[data-phase]");
+
+    const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.05
+    };
+
+    const phaseObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const phase = entry.target.dataset.phase;
+
+            switch(phase) {
+            case "intro":
+                titular.style.opacity = 1;
+                break;
+            case "editorial-1":
+            case "editorial-2":
+                titular.style.opacity = 0;
+                scrollHint.style.opacity = 0;
+                window.paintDefault();
+                break;
+            case "scrolly-1":
+            case "scrolly-2":
+                titular.style.opacity = 0;
+                scrollHint.style.opacity = 0;
+                break;
+            case "credits":
+                titular.style.opacity = 0;
+                scrollHint.style.opacity = 0;
+                window.paintDefault();
+                break;
+            }
+        }
+        });
+    }, observerOptions);
+
+    phases.forEach(phase => phaseObserver.observe(phase));
+
+
+  </script>
 
 </body>
 </html>
